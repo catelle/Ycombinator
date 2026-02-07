@@ -1,21 +1,24 @@
-# NappyMine - 4C Hair Care Platform
+# NappyMine - Cofounder Matchmaking Platform
 
-A comprehensive platform for 4C hair care products and mentoring services built with Next.js, Firebase, and TypeScript.
+A matchmaking platform for cofounders and startup teams built with Next.js, MongoDB, and TypeScript.
 
 ## Features
 
-- **Product Catalog**: Browse and search hair care products with categories and filters
-- **Shopping Cart**: Add products to cart with localStorage persistence
-- **Checkout**: Simulate order placement (saves to Firestore)
-- **Mentor Booking**: View mentor profiles and book sessions
-- **Blog**: Educational content and hair care tips
-- **Mobile-First Design**: Responsive design optimized for mobile devices
+- **Email + Password Authentication** with email verification and session cookies
+- **Founder Profiles**: Role, skills, startup idea, commitment, and location
+- **Rule-based Matching**: Compatibility scoring with role complementarity, skills, commitment, and location
+- **Paid Unlocks**: Reveal identity and contact after a Mobile Money unlock
+- **Team Locking**: 1:1 or group lock (max 5 members)
+- **Optional Verification** with clear safety disclaimer
+- **Admin Tools**: Manage users, matches, and verification requests
+- **Light/Dark Theme** with user toggle
 
 ## Tech Stack
 
 - **Frontend**: Next.js 15, React 19, TypeScript, Tailwind CSS
-- **Backend**: Firebase Firestore
-- **Hosting**: Firebase Hosting
+- **Backend**: MongoDB (single source of truth)
+- **Auth**: Email/password + verification + session cookies
+- **Payments**: Mobile Money (abstracted service layer)
 - **Icons**: Lucide React
 
 ## Getting Started
@@ -26,43 +29,34 @@ A comprehensive platform for 4C hair care products and mentoring services built 
 npm install
 ```
 
-### 2. Firebase Setup
+### 2. MongoDB Setup
 
-1. Create a new Firebase project at [Firebase Console](https://console.firebase.google.com)
-2. Enable Firestore Database
-3. Enable Firebase Hosting
-4. Copy your Firebase config and update `src/lib/firebase.ts`
+Create a MongoDB database and set the following environment variables (for example in `.env.local`):
 
-### 3. Update Firebase Configuration
-
-Replace the placeholder values in `src/lib/firebase.ts` with your actual Firebase config:
-
-```typescript
-const firebaseConfig = {
-  apiKey: "your-actual-api-key",
-  authDomain: "your-project.firebaseapp.com",
-  projectId: "your-actual-project-id",
-  storageBucket: "your-project.appspot.com",
-  messagingSenderId: "your-sender-id",
-  appId: "your-app-id"
-};
+```
+MONGODB_URI="mongodb+srv://<user>:<password>@<cluster>/<db>?retryWrites=true&w=majority"
+MONGODB_DB="nappymine"
 ```
 
-### 4. Deploy Firestore Rules
+### 3. Email Verification (EmailJS)
 
-```bash
-firebase deploy --only firestore:rules
-firebase deploy --only firestore:indexes
+Configure EmailJS to send verification codes:
+
+```
+EMAILJS_SERVICE_ID="your_service_id"
+EMAILJS_TEMPLATE_ID="your_template_id"
+EMAILJS_PUBLIC_KEY="your_public_key"
+EMAILJS_PRIVATE_KEY="your_private_key"
+EMAILJS_ORIGIN="https://your-domain.com"
 ```
 
-### 5. Seed Sample Data
+Template params expected: `to_email`, `to_name`, `verification_code`.
 
-Use the Firebase Console to manually add sample data from `scripts/seed-data.js` to these collections:
-- `products`
-- `mentors` 
-- `blog`
+### 4. Mobile Money
 
-### 6. Run Development Server
+Payments are abstracted in `src/lib/payments.ts`. Replace the mock implementation with your provider SDK.
+
+### 5. Run Development Server
 
 ```bash
 npm run dev
@@ -70,66 +64,51 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-## Firestore Schema
+## MongoDB Collections
 
-### Products Collection
+### Users
 ```typescript
 {
+  _id: string;
+  email: string;
   name: string;
-  description: string;
-  price: number;
-  category: string;
-  imageUrl: string;
-  inStock: boolean;
+  phone: string;
+  role: 'admin' | 'member' | 'suspended';
+  emailVerified: boolean;
+  verified?: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 ```
 
-### Mentors Collection
+### Profiles
 ```typescript
 {
+  _id: string;
+  userId: string;
   name: string;
-  bio: string;
-  specialties: string[];
-  imageUrl: string;
-  hourlyRate: number;
-  availability: string[];
+  alias?: string;
+  role: 'technical' | 'business' | 'product' | 'design' | 'marketing' | 'operations' | 'other';
+  skills: string[];
+  interests: string;
+  commitment: 'exploring' | 'part-time' | 'full-time' | 'weekends';
+  location: string;
+  contactEmail?: string;
+  contactPhone?: string;
+  photoUrl?: string;
+  verified?: boolean;
 }
 ```
 
-### Orders Collection
+### Matches
 ```typescript
 {
-  items: CartItem[];
-  total: number;
-  customerName: string;
-  customerEmail: string;
-  shippingAddress: string;
-  createdAt: Date;
-}
-```
-
-### Bookings Collection
-```typescript
-{
-  mentorId: string;
-  clientName: string;
-  clientEmail: string;
-  date: string;
-  time: string;
-  notes?: string;
-  createdAt: Date;
-}
-```
-
-### Blog Collection
-```typescript
-{
-  title: string;
-  content: string;
-  excerpt: string;
-  imageUrl: string;
-  category: string;
-  publishedAt: Date;
+  _id: string;
+  userId: string;
+  matchedUserId: string;
+  score: number;
+  state: 'OPEN' | 'UNLOCKED' | 'LOCKED' | 'VERIFIED';
+  matchType: 'cofounder' | 'mentorship' | 'accountability';
 }
 ```
 
@@ -141,45 +120,28 @@ Open [http://localhost:3000](http://localhost:3000) to view the application.
 npm run build
 ```
 
-### Deploy to Firebase Hosting
+### Deploy
 
-```bash
-firebase login
-firebase init hosting
-firebase deploy
-```
+Deploy to your hosting provider of choice. Ensure MongoDB environment variables are configured.
 
 ## Project Structure
 
 ```
 src/
 ├── app/                 # Next.js app router pages
-│   ├── products/       # Product listing and details
-│   ├── cart/           # Shopping cart
-│   ├── checkout/       # Order placement
-│   ├── mentors/        # Mentor profiles and booking
-│   ├── blog/           # Blog posts
-│   └── order-success/  # Order confirmation
+│   ├── profile/        # Founder profile flow
+│   ├── matches/        # Match browsing and unlocks
+│   ├── team/           # Team locking + verification
+│   └── admin/          # Admin tools
 ├── components/         # Reusable React components
 ├── hooks/             # Custom React hooks
-├── lib/               # Firebase configuration
+├── lib/               # MongoDB + service modules
 └── types/             # TypeScript type definitions
 ```
 
 ## Key Features Implementation
 
-- **Cart Management**: Uses localStorage with React hooks for persistence
-- **Real-time Data**: Firestore integration with React hooks
-- **Mobile-First**: Tailwind CSS responsive design
-- **Type Safety**: Full TypeScript implementation
-- **SEO Friendly**: Next.js static generation
-
-## Future Enhancements
-
-- User authentication and profiles
-- Payment integration (Stripe/PayPal)
-- Real-time chat with mentors
-- Advanced product filtering
-- Inventory management
-- Order tracking
-- Email notifications
+- **Matching Engine**: Rule-based compatibility scoring with modular services
+- **Session Auth**: Server-stored sessions backed by MongoDB
+- **Payments**: Mobile Money service abstraction with audit logging
+- **Trust & Safety**: Reporting, blocking, and verification workflows

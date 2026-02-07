@@ -1,118 +1,174 @@
-export interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  imageUrl: string;
-  inStock: boolean;
-}
-
-export interface Mentor {
-  id: string;
-  name: string;
-  bio: string;
-  specialties: string[];
-  imageUrl: string;
-  hourlyRate: number;
-  availability: string[];
-  category: 'hair-care' | 'public-speaking' | 'professional';
-  userId?: string;
-}
-
-export interface Booking {
-  id: string;
-  mentorId: string;
-  clientId: string;
-  clientName: string;
-  clientEmail: string;
-  date: string;
-  time: string;
-  notes?: string;
-  status: 'pending' | 'confirmed' | 'completed' | 'cancelled';
-  createdAt: Date;
-}
-
-export interface BlogPost {
-  id: string;
-  title: string;
-  content: string;
-  excerpt: string;
-  imageUrl: string;
-  category: string;
-  publishedAt: Date;
-}
-
-export interface CartItem {
-  product: Product;
-  quantity: number;
-}
-
-export interface Order {
-  id: string;
-  items: CartItem[];
-  total: number;
-  customerName: string;
-  customerEmail: string;
-  shippingAddress: string;
-  userId?: string;
-  createdAt: Date;
-}
-
 export interface User {
   id: string;
   email: string;
   name: string;
-  role: 'admin' | 'mentor' | 'client';
+  phone?: string;
+  role: 'admin' | 'member' | 'suspended';
   createdAt: Date;
+  verified?: boolean;
+  suspended?: boolean;
+  emailVerified?: boolean;
+  matchLimit?: number;
 }
 
-export interface MentorshipSession {
+export enum MatchState {
+  OPEN = 'OPEN',
+  UNLOCKED = 'UNLOCKED',
+  LOCKED = 'LOCKED',
+  VERIFIED = 'VERIFIED'
+}
+
+export type ProfileRole =
+  | 'technical'
+  | 'business'
+  | 'product'
+  | 'design'
+  | 'marketing'
+  | 'operations'
+  | 'other';
+
+export type CommitmentLevel = 'exploring' | 'part-time' | 'full-time' | 'weekends';
+
+export interface Profile {
   id: string;
-  bookingId: string;
-  mentorId: string;
-  clientId: string;
-  sessionNotes?: string;
-  resources?: string[];
-  nextSteps?: string;
-  meetingRoomId?: string;
-  status: 'scheduled' | 'in-progress' | 'completed';
+  userId: string;
+  name: string;
+  alias?: string;
+  role: ProfileRole;
+  skills: string[];
+  languages: string[];
+  achievements: string[];
+  interests: string;
+  commitment: CommitmentLevel;
+  location: string;
+  contactEmail?: string;
+  contactPhone?: string;
+  photoUrl?: string;
+  verified?: boolean;
+  completed?: boolean;
   createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface PublicProfile {
+  id: string;
+  role: ProfileRole;
+  skills: string[];
+  languages: string[];
+  achievements: string[];
+  interests: string;
+  commitment: CommitmentLevel;
+  location: string;
+}
+
+export interface Match {
+  id: string;
+  userId: string;
+  matchedUserId: string;
+  score: number;
+  state: MatchState;
+  matchType: 'cofounder' | 'mentorship' | 'accountability';
+  decision?: 'accepted' | 'rejected';
+  unlockPaymentId?: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface Subscription {
   id: string;
   userId: string;
-  type: 'basic' | 'premium' | 'elite';
+  type: 'basic' | 'premium';
   status: 'active' | 'cancelled' | 'expired';
   startDate: Date;
   endDate: Date;
   price: number;
 }
 
-export interface AfroBox {
+export interface Payment {
   id: string;
-  name: string;
-  description: string;
-  price: number;
-  items: string[];
-  imageUrl: string;
-  category: 'hair-care' | 'styling' | 'premium';
+  userId: string;
+  amount: number;
+  currency: 'FCFA';
+  type: 'unlock' | 'verification' | 'subscription' | 'match' | 'match_limit';
+  status: 'pending' | 'succeeded' | 'failed';
+  provider: 'mobile-money' | 'cinetpay';
+  reference: string;
+  createdAt: Date;
+  metadata?: Record<string, string | number | boolean>;
 }
 
-export interface Message {
+export interface VerificationRequest {
   id: string;
-  senderId: string;
-  receiverId: string;
-  content: string;
-  timestamp: Date;
-  read: boolean;
+  userId: string;
+  status: 'pending' | 'approved' | 'rejected';
+  amount: number;
+  createdAt: Date;
+  updatedAt: Date;
+  reviewedBy?: string;
 }
 
-export interface MeetingRoom {
+export interface Team {
   id: string;
-  sessionId: string;
-  roomUrl: string;
-  isActive: boolean;
+  ownerId: string;
+  memberIds: string[];
+  status: 'forming' | 'locked';
+  maxMembers: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface MatchRequest {
+  id: string;
+  requesterId: string;
+  recipientId: string;
+  status: 'pending' | 'accepted' | 'declined' | 'expired' | 'cancelled' | 'matched';
+  score: number;
+  requesterPaid: boolean;
+  recipientPaid: boolean;
+  requesterPaymentId?: string;
+  recipientPaymentId?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  expiresAt: Date;
+  acceptedAt?: Date;
+  matchedAt?: Date;
+}
+
+export interface Report {
+  id: string;
+  reporterId: string;
+  reportedUserId: string;
+  reason: string;
+  createdAt: Date;
+}
+
+export interface Block {
+  id: string;
+  blockerId: string;
+  blockedUserId: string;
+  createdAt: Date;
+}
+
+export interface AuditLog {
+  id: string;
+  actorId: string;
+  action: 'payment' | 'unlock' | 'lock' | 'verification';
+  metadata: Record<string, string | number | boolean>;
+  createdAt: Date;
+}
+
+export interface FeatureFlag {
+  id: string;
+  key: 'mentorship_matching' | 'accountability_partners';
+  enabled: boolean;
+  updatedAt: Date;
+}
+
+export interface AccompanimentRequest {
+  id: string;
+  teamId: string;
+  userId: string;
+  type: 'incubator' | 'accelerator' | 'platform';
+  providerName?: string;
   createdAt: Date;
 }
