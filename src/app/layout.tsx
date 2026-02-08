@@ -1,10 +1,12 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import Navbar from "@/components/Navbar";
-import MobileNav from "@/components/MobileNav";
-import ThemeProvider from "@/components/ThemeProvider";
-import { AuthProvider } from "@/hooks/useSimpleAuth";
+import type { Metadata } from 'next';
+import { Geist, Geist_Mono } from 'next/font/google';
+import { NextIntlClientProvider } from 'next-intl';
+import { getLocale, getMessages } from 'next-intl/server';
+import './globals.css';
+import Navbar from '@/components/Navbar';
+import MobileNav from '@/components/MobileNav';
+import ThemeProvider from '@/components/ThemeProvider';
+import { AuthProvider } from '@/hooks/useSimpleAuth';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,27 +19,31 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "NappyMine - Cofounder Matchmaking Platform",
-  description: "Match with complementary cofounders and build trusted startup teams.",
+  title: 'YmatchAfrica - Cofounder Matchmaking Platform',
+  description: 'Match with complementary cofounders and build trusted startup teams.'
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+  const messages = await getMessages();
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[var(--background)] text-[var(--text)]`}
       >
-        <ThemeProvider>
-          <AuthProvider>
-            <Navbar />
-            <main className="pb-20 md:pb-0">{children}</main>
-            <MobileNav />
-          </AuthProvider>
-        </ThemeProvider>
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          <ThemeProvider>
+            <AuthProvider>
+              <Navbar />
+              <main className="pb-20 md:pb-0">{children}</main>
+              <MobileNav />
+            </AuthProvider>
+          </ThemeProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

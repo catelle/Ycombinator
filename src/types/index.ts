@@ -9,13 +9,16 @@ export interface User {
   suspended?: boolean;
   emailVerified?: boolean;
   matchLimit?: number;
+  deletedAt?: Date;
+  deletedBy?: string;
 }
 
 export enum MatchState {
   OPEN = 'OPEN',
   UNLOCKED = 'UNLOCKED',
   LOCKED = 'LOCKED',
-  VERIFIED = 'VERIFIED'
+  VERIFIED = 'VERIFIED',
+  CANCELLED = 'CANCELLED'
 }
 
 export type ProfileRole =
@@ -38,6 +41,7 @@ export interface Profile {
   skills: string[];
   languages: string[];
   achievements: string[];
+  verificationDocs: string[];
   interests: string;
   commitment: CommitmentLevel;
   location: string;
@@ -52,6 +56,7 @@ export interface Profile {
 
 export interface PublicProfile {
   id: string;
+  alias?: string;
   role: ProfileRole;
   skills: string[];
   languages: string[];
@@ -70,6 +75,10 @@ export interface Match {
   matchType: 'cofounder' | 'mentorship' | 'accountability';
   decision?: 'accepted' | 'rejected';
   unlockPaymentId?: string;
+  cancelledAt?: Date;
+  cancelledBy?: string;
+  cancellationReason?: string;
+  cancellationRequestId?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -88,10 +97,10 @@ export interface Payment {
   id: string;
   userId: string;
   amount: number;
-  currency: 'FCFA';
+  currency: 'FCFA' | 'XAF';
   type: 'unlock' | 'verification' | 'subscription' | 'match' | 'match_limit';
   status: 'pending' | 'succeeded' | 'failed';
-  provider: 'mobile-money' | 'cinetpay';
+  provider: 'mobile-money' | 'cinetpay' | 'payunit';
   reference: string;
   createdAt: Date;
   metadata?: Record<string, string | number | boolean>;
@@ -102,6 +111,7 @@ export interface VerificationRequest {
   userId: string;
   status: 'pending' | 'approved' | 'rejected';
   amount: number;
+  paymentId?: string;
   createdAt: Date;
   updatedAt: Date;
   reviewedBy?: string;
@@ -127,6 +137,7 @@ export interface MatchRequest {
   recipientPaid: boolean;
   requesterPaymentId?: string;
   recipientPaymentId?: string;
+  source?: 'user' | 'admin';
   createdAt: Date;
   updatedAt: Date;
   expiresAt: Date;
@@ -152,8 +163,29 @@ export interface Block {
 export interface AuditLog {
   id: string;
   actorId: string;
-  action: 'payment' | 'unlock' | 'lock' | 'verification';
+  action:
+    | 'payment'
+    | 'unlock'
+    | 'lock'
+    | 'verification'
+    | 'match_request'
+    | 'match_response'
+    | 'match_cancel_request'
+    | 'match_cancel'
+    | 'admin_action'
+    | 'user_soft_delete';
   metadata: Record<string, string | number | boolean>;
+  createdAt: Date;
+}
+
+export interface Notification {
+  id: string;
+  userId: string;
+  type: 'match_request' | 'match_response' | 'match_cancellation' | 'system';
+  title: string;
+  message: string;
+  actionUrl?: string;
+  readAt?: Date;
   createdAt: Date;
 }
 
@@ -171,4 +203,19 @@ export interface AccompanimentRequest {
   type: 'incubator' | 'accelerator' | 'platform';
   providerName?: string;
   createdAt: Date;
+}
+
+export interface MatchCancellationRequest {
+  id: string;
+  matchId: string;
+  requesterId: string;
+  recipientId: string;
+  status: 'pending' | 'accepted' | 'declined' | 'approved' | 'rejected' | 'cancelled';
+  requesterReason: string;
+  recipientResponse?: string;
+  adminDecisionNote?: string;
+  adminId?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  decidedAt?: Date;
 }

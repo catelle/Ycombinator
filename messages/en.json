@@ -1,0 +1,562 @@
+{
+  "nav": {
+    "home": "Home",
+    "profiles": "Profiles",
+    "matches": "Matches",
+    "requests": "Requests",
+    "team": "Team",
+    "notifications": "Notifications",
+    "admin": "Admin",
+    "profile": "Profile",
+    "signIn": "Sign In"
+  },
+  "theme": {
+    "toggle": "Toggle theme",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "common": {
+    "loading": "Loading...",
+    "backToHome": "Back to home",
+    "goToSignIn": "Go to Sign In",
+    "roles": {
+      "technical": "Technical",
+      "business": "Business",
+      "product": "Product",
+      "design": "Design",
+      "marketing": "Marketing",
+      "operations": "Operations",
+      "other": "Other"
+    },
+    "commitment": {
+      "exploring": "Exploring",
+      "part-time": "Part-time",
+      "full-time": "Full-time",
+      "weekends": "Weekends"
+    }
+  },
+  "home": {
+    "badge": "Curated cofounder matchmaking",
+    "title": "Build your startup team with",
+    "titleHighlight": "trust and clarity",
+    "intro": "NappyMine helps founders find complementary partners, verify identities, and lock teams with confidence. No noise, just aligned builders.",
+    "ctaPrimary": "Create Your Profile",
+    "ctaSecondary": "Browse Matches",
+    "stats": {
+      "compatibility": "Compatibility",
+      "roleSkills": "Role + Skills",
+      "verification": "Verification",
+      "verificationPrice": "Optional 2,000 FCFA",
+      "unlock": "Unlock",
+      "unlockPrice": "500 FCFA"
+    },
+    "heroAlt": "Matchmaking illustration",
+    "howItWorks": {
+      "title": "How it works",
+      "subtitle": "Matchmaking is powered by a rule-based compatibility engine so you get aligned cofounders without the noise.",
+      "step1": {
+        "title": "1. Build your founder profile",
+        "body": "Tell us your role, skills, and startup idea."
+      },
+      "step2": {
+        "title": "2. Review curated matches",
+        "body": "See compatibility scores before unlocking."
+      },
+      "step3": {
+        "title": "3. Unlock & lock teams",
+        "body": "Reveal contacts, invite, and lock your team."
+      },
+      "imageAlt": "Profile and match cards"
+    },
+    "trust": {
+      "title": "Trust, safety, and verification",
+      "subtitle": "Verification is optional but recommended. When your team is locked, request identity verification to build trust and reduce risk.",
+      "card1": {
+        "title": "Optional identity verification",
+        "body": "Pay 2,000 FCFA to submit a verification request."
+      },
+      "card2": {
+        "title": "Premium intelligent matching",
+        "body": "Only see matches with ≥80% compatibility."
+      },
+      "cta": "Manage Your Team",
+      "imageAlt": "Team locking"
+    },
+    "ready": {
+      "title": "Ready to meet your cofounder?",
+      "subtitle": "Start with your profile today and unlock the right connections.",
+      "cta": "Get Started"
+    }
+  },
+  "auth": {
+    "titles": {
+      "login": "Welcome back",
+      "signup": "Create your account",
+      "reset": "Reset your password"
+    },
+    "subtitles": {
+      "login": "Sign in to continue your matchmaking journey.",
+      "signup": "Join the platform to find your cofounder.",
+      "reset": "We will send a reset code to your email."
+    },
+    "labels": {
+      "fullName": "Full Name",
+      "email": "Email",
+      "phone": "Phone",
+      "password": "Password",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm Password",
+      "confirmNewPassword": "Confirm New Password",
+      "verifyHint": "Check your email for the 6-digit verification code.",
+      "verificationCode": "Verification Code",
+      "resetHint": "Enter the reset code sent to your email.",
+      "resetCode": "Reset Code"
+    },
+    "actions": {
+      "verifyEmail": "Verify Email",
+      "sendResetCode": "Send Reset Code",
+      "resetPassword": "Reset Password",
+      "signIn": "Sign In",
+      "createAccount": "Create Account",
+      "forgotPassword": "Forgot your password?",
+      "backToSignIn": "Back to sign in",
+      "switchToSignup": "Don't have an account? Sign up",
+      "switchToLogin": "Already have an account? Sign in",
+      "resendCode": "Resend code"
+    },
+    "errors": {
+      "passwordLength": "Password must be at least 8 characters.",
+      "passwordMatch": "Passwords do not match.",
+      "verificationEmailFailed": "We could not send the verification email. Please use “Resend code”.",
+      "emailNotVerified": "Email not verified. We sent a verification code.",
+      "generic": "An error occurred. Please try again.",
+      "resendFailed": "Failed to resend code."
+    },
+    "notices": {
+      "resetEmailFailed": "We could not send the reset email. Please try again or use a different email.",
+      "resetEmailSent": "We sent a reset code to your email.",
+      "resetSuccess": "Password updated. You can sign in now.",
+      "verificationResent": "We sent a new verification code."
+    }
+  },
+  "profileForm": {
+    "signInTitle": "Please sign in to create your profile",
+    "title": "Build Your",
+    "titleHighlight": "Founder Profile",
+    "subtitle": "Show your skills and what you are building so we can match you accurately.",
+    "labels": {
+      "name": "Name",
+      "alias": "Alias (public display name)",
+      "optional": "Optional",
+      "role": "Role",
+      "commitment": "Commitment Level",
+      "skills": "Skills",
+      "languages": "Languages",
+      "interests": "Startup Interest / Idea",
+      "achievements": "Personal Achievements",
+      "verificationDocs": "Verification Documents (required)",
+      "location": "Location",
+      "photoUrl": "Photo URL (optional)"
+    },
+    "contact": {
+      "title": "Contact Details (revealed after unlock)",
+      "email": "Contact Email",
+      "phone": "Phone / WhatsApp"
+    },
+    "roles": {
+      "technical": "Technical",
+      "business": "Business",
+      "product": "Product",
+      "design": "Design",
+      "marketing": "Marketing",
+      "operations": "Operations",
+      "other": "Other"
+    },
+    "commitment": {
+      "exploring": "Exploring",
+      "part-time": "Part-time",
+      "full-time": "Full-time",
+      "weekends": "Weekends"
+    },
+    "placeholders": {
+      "skill": "Add a skill",
+      "language": "Add a language",
+      "interests": "Describe your startup idea or interests",
+      "achievement": "Add an achievement",
+      "verificationDocs": "Paste a document URL (ID, certificate, or proof)",
+      "location": "City, Country or Remote",
+      "contactEmail": "you@company.com",
+      "contactPhone": "+237 6XX XXX XXX",
+      "photoUrl": "https://"
+    },
+    "photoHint": "Tip: upload your photo to Google Drive, Imgur, or Cloudinary and paste the direct image URL.",
+    "verificationDocsHint": "Provide at least one document link (ID, certificate, or proof of work).",
+    "actions": {
+      "add": "Add",
+      "save": "Save Profile",
+      "saving": "Saving..."
+    },
+    "toast": {
+      "saved": "Profile saved. Redirecting to profiles..."
+    }
+  },
+  "profiles": {
+    "title": "Founder",
+    "titleHighlight": "Profiles",
+    "subtitle": "Browse anonymous founder profiles. Identity and contact details stay hidden until a match is unlocked.",
+    "signInHint": "Sign in to test match compatibility and request a match.",
+    "loading": "Loading profiles...",
+    "error": "Unable to load profiles.",
+    "empty": "No profiles available yet."
+  },
+  "profileDetail": {
+    "loadingProfile": "Loading profile...",
+    "notAvailable": "Profile not available",
+    "backToProfiles": "Back to Profiles",
+    "startupFocus": "Startup Focus",
+    "skills": "Skills",
+    "languages": "Languages",
+    "achievements": "Achievements",
+    "privacyNote": "Identity and contact details are hidden until both founders accept and complete payment.",
+    "compatibilityScore": "Compatibility Score",
+    "threshold": "Match requests require at least {threshold}% compatibility.",
+    "pendingHint": "This request is still pending. You can track it in Requests.",
+    "actions": {
+      "testMatch": "Test Match Compatibility",
+      "signInToTest": "Sign in to Test Match",
+      "requestPending": "Request Pending",
+      "sendingRequest": "Sending Request...",
+      "requestMatch": "Request Match",
+      "redirecting": "Redirecting...",
+      "upgradeLimit": "Upgrade Match Limit",
+      "updateProfile": "Update profile"
+    },
+    "errors": {
+      "calculateMatch": "Unable to calculate match score.",
+      "requestPending": "Match request already pending.",
+      "matchLimit": "Match limit reached. Upgrade for {price} FCFA to request more matches.",
+      "requestExists": "You already have a request with this founder.",
+      "dailyLimit": "Daily request limit reached ({limit} per day). Try again tomorrow.",
+      "lowScore": "Compatibility score is below the required {threshold}% threshold.",
+      "requestFailed": "Unable to send request.",
+      "upgradeFailed": "Unable to start upgrade payment."
+    },
+    "messages": {
+      "requestSent": "Match request sent. You can track it in Requests."
+    },
+    "toast": {
+      "completeProfile": "Complete your profile first to test match compatibility."
+    }
+  },
+  "requests": {
+    "signInTitle": "Please sign in to manage requests",
+    "title": "Match",
+    "titleHighlight": "Requests",
+    "subtitle": "Requests expire after 3 days if there is no response.",
+    "loading": "Loading requests...",
+    "error": "Unable to load requests.",
+    "incoming": {
+      "title": "Incoming Requests",
+      "empty": "No incoming requests yet."
+    },
+    "outgoing": {
+      "title": "Outgoing Requests",
+      "empty": "No outgoing requests yet."
+    },
+    "tabs":{
+    "requests": "Requests",
+    "cancellations": "Cancellations",
+    "unlocked": "Unlocked Matches"
+    },
+    "status": "Status: {status}",
+    "actions": {
+      "accept": "Accept",
+      "decline": "Decline",
+      "payUnlock": "Pay 500 FCFA to Unlock",
+      "redirecting": "Redirecting...",
+      "upgradeLimit": "Upgrade Limit"
+    },
+    "errors": {
+      "matchLimitAccept": "Match limit reached. Upgrade for {price} FCFA to accept more matches.",
+      "matchLimitPay": "Match limit reached. Upgrade for {price} FCFA to pay for more matches.",
+      "respondFailed": "Unable to respond to request.",
+      "network": "Network error. Check your internet connection and try again.",
+      "paymentFailed": "Unable to start payment.",
+      "upgradeFailed": "Unable to start upgrade payment."
+    },
+    "waitingOther": "Waiting for the other founder to complete payment.",
+    "unlocked": {
+      "title": "Unlocked Matches",
+      "status": "Match status: {state}",
+      "noEmail": "No email provided",
+      "noPhone": "No phone provided",
+      "noProfile": "Profile not available.",
+      "empty": "No unlocked matches yet."
+    },
+    "cancellations": {
+      "title": "Cancellation Requests",
+      "loading": "Loading cancellation requests...",
+      "error": "Unable to load cancellation requests.",
+      "incoming": "Incoming Cancellation Requests",
+      "outgoing": "Outgoing Cancellation Requests",
+      "status": "Status: {status}",
+      "responsePlaceholder": "Explain your decision for the admin...",
+      "responseLabel": "Response",
+      "emptyIncoming": "No incoming cancellation requests.",
+      "emptyOutgoing": "No outgoing cancellation requests.",
+      "errors": {
+        "respondFailed": "Unable to respond to cancellation request."
+      }
+    }
+  },
+  "matches": {
+    "signInTitle": "Please sign in to view matches",
+    "verification": {
+      "title": "Verification is optional but recommended.",
+      "disclaimer": "The platform is not responsible for scams if verification is skipped."
+    },
+    "title": "Confirmed",
+    "titleHighlight": "Matches",
+    "subtitle": "Only matches validated by both founders and locked are shown here.",
+    "loading": "Loading your matches...",
+    "error": "Unable to load matches.",
+    "fallbackRole": "Cofounder",
+    "fallbackCommitment": "exploring",
+    "fallbackLocation": "Remote",
+    "contactInfo": "Contact Info",
+    "noEmail": "No email provided",
+    "noPhone": "No phone provided",
+    "empty": "No confirmed matches yet. Review requests to accept and lock a match.",
+    "cancellation": {
+      "request": "Request Match Cancellation",
+      "prompt": "Explain why you want to cancel this match.",
+      "sent": "Cancellation request sent. You can track it in Requests.",
+      "failed": "Unable to submit cancellation request.",
+      "reasonTooShort": "Please provide a longer justification."
+    }
+  },
+  "team": {
+    "signInTitle": "Please sign in to manage your team",
+    "title": "Team",
+    "titleHighlight": "Locking",
+    "subtitle": "Create a team, invite unlocked matches, and lock your cofounder group.",
+    "error": "Unable to load team data.",
+    "create": {
+      "title": "Create your team",
+      "subtitle": "Teams can have up to 5 members.",
+      "action": "Create Team"
+    },
+    "team": {
+      "title": "Your Team",
+      "hiddenMember": "Member (hidden)",
+      "lock": "Lock Team"
+    },
+    "invite": {
+      "title": "Invite unlocked matches",
+      "empty": "No unlocked matches yet. Unlock a match to invite them.",
+      "hiddenProfile": "Hidden profile",
+      "alreadyMember": "Already in Team",
+      "action": "Invite to Team",
+      "lockOne": "Lock 1:1"
+    },
+    "verification": {
+      "title": "Identity Verification (Optional)",
+      "subtitle": "Verification is optional but helps build trust between cofounders.",
+      "request": "Request Verification · 2,000 FCFA",
+      "verified": "Verified",
+      "pending": "Pending",
+      "paymentFailed": "Unable to start verification payment.",
+      "disclaimer": "The platform is not responsible for scams if verification is skipped."
+    },
+    "accompaniment": {
+      "title": "Startup Accompaniment",
+      "subtitle": "Choose an incubator or accelerator, or request platform accompaniment.",
+      "viewOptions": "View Accompaniment Options",
+      "incubator": "Incubator",
+      "accelerator": "Accelerator",
+      "options": {
+        "incubatorOne": "Silicon Savannah Hub",
+        "acceleratorOne": "Pan-Africa Launch"
+      },
+      "platformTitle": "Platform Accompaniment",
+      "platformSubtitle": "Let the platform guide you",
+      "requestSubmitted": "Request submitted. Our team will contact you soon."
+    }
+  },
+  "notifications": {
+    "signInTitle": "Please sign in to view notifications",
+    "title": "Notifications",
+    "subtitle": "Stay updated on match requests and responses.",
+    "actions": {
+      "markAllRead": "Mark all read",
+      "viewDetails": "View details",
+      "markRead": "Mark read"
+    },
+    "loading": "Loading notifications...",
+    "error": "Unable to load notifications.",
+    "empty": "No notifications yet."
+  },
+  "admin": {
+    "accessDenied": {
+      "title": "Access Denied",
+      "subtitle": "You need admin privileges to access this page."
+    },
+    "title": "Admin",
+    "titleHighlight": "Dashboard",
+    "subtitle": "Manage the matchmaking platform.",
+    "cards": {
+      "matching": {
+        "title": "Matching Control",
+        "body": "Review matches, users, and verification requests."
+      },
+      "activity": {
+        "title": "Activity & Stats",
+        "body": "Monitor platform metrics and user actions."
+      },
+      "trust": {
+        "title": "Trust & Safety",
+        "body": "Identity verification, reporting, and platform integrity."
+      }
+    }
+  },
+  "adminMatching": {
+    "accessDenied": {
+      "title": "Access Denied",
+      "subtitle": "You need admin privileges to access this page."
+    },
+    "title": "Matching",
+    "titleHighlight": "Admin",
+    "subtitle": "Manage users, matches, and verification requests.",
+    "backToAdmin": "Back to Admin",
+    "loading": "Loading data...",
+    "error": "Failed to load admin data.",
+    "sections": {
+      "createMatch": "Create Match Request",
+      "users": "Users",
+      "verifications": "Verification Requests",
+      "cancellations": "Cancellation Requests",
+      "matches": "Matches"
+    },
+    "badges": {
+      "verified": "Verified",
+      "emailVerified": "Email Verified",
+      "deleted": "Deleted"
+    },
+    "placeholders": {
+      "requester": "Requester email, id, or alias",
+      "recipient": "Recipient email, id, or alias",
+      "search": "Search matches by username/email"
+    },
+    "actions": {
+      "suspend": "Suspend",
+      "unsuspend": "Unsuspend",
+      "approve": "Approve",
+      "create": "Create Request",
+      "creating": "Creating...",
+      "softDelete": "Soft Delete",
+      "cancelMatch": "Cancel Match",
+      "deletePrompt": "Reason for soft delete (optional)",
+      "cancelPrompt": "Reason for cancelling this match (optional)"
+    },
+    "errors": {
+      "createMatchRequest": "Unable to create match request."
+    },
+    "verification": {
+      "user": "User {id}",
+      "status": "Status: {status}"
+    },
+    "cancellations": {
+      "pair": "{a} ↔ {b}",
+      "status": "Status: {status}",
+      "requestReason": "Request reason:",
+      "response": "Recipient response:",
+      "adminNote": "Admin note",
+      "approve": "Approve cancellation",
+      "reject": "Reject cancellation",
+      "empty": "No cancellation requests."
+    },
+    "matches": {
+      "pair": "{a} ↔ {b}",
+      "state": "State: {state}"
+    }
+  },
+  "adminActivity": {
+    "accessDenied": {
+      "title": "Access Denied",
+      "subtitle": "You need admin privileges to access this page."
+    },
+    "title": "Platform",
+    "titleHighlight": "Activity",
+    "subtitle": "Track user actions and platform statistics.",
+    "backToAdmin": "Back to Admin",
+    "loading": "Loading activity...",
+    "error": "Failed to load activity.",
+    "sections": {
+      "users": "Users",
+      "matches": "Matches",
+      "revenue": "Payments",
+      "activity": "Activity Log"
+    },
+    "stats": {
+      "totalUsers": "Total users: {value}",
+      "activeUsers": "Active users: {value}",
+      "deletedUsers": "Deleted users: {value}",
+      "suspendedUsers": "Suspended users: {value}",
+      "totalProfiles": "Total profiles: {value}",
+      "completedProfiles": "Completed profiles: {value}",
+      "totalMatches": "Total matches: {value}",
+      "lockedMatches": "Locked matches: {value}",
+      "cancelledMatches": "Cancelled matches: {value}",
+      "pendingRequests": "Pending match requests: {value}",
+      "totalPayments": "Payments recorded: {value}",
+      "successPayments": "Successful payments: {value}",
+      "noRevenue": "No revenue yet.",
+      "revenueLine": "{currency}: {value}"
+    },
+    "emptyLogs": "No activity logs yet."
+  },
+  "accompaniment": {
+    "errors": {
+      "signInRequired": "Please sign in and complete your team before requesting accompaniment.",
+      "submitFailed": "Unable to submit request right now."
+    },
+    "messages": {
+      "requestSubmitted": "Request submitted. Our team will contact you soon."
+    },
+    "title": "Startup",
+    "titleHighlight": "Accompaniment",
+    "subtitle": "After forming a team, choose a local incubator or the platform accompaniment.",
+    "backToTeam": "Back to Team",
+    "local": {
+      "title": "Local incubators & mentors",
+      "types": {
+        "incubator": "Incubator",
+        "accelerator": "Accelerator"
+      }
+    },
+    "platform": {
+      "title": "Platform accompaniment",
+      "subtitle": "Get direct guidance from our product, growth, and fundraising experts.",
+      "signInHint": "Sign in to request accompaniment."
+    },
+    "actions": {
+      "requestProgram": "Request This Program",
+      "requestPlatform": "Request Platform Accompaniment"
+    },
+    "monetization": {
+      "title": "Monetization",
+      "fixed": {
+        "title": "Fixed fee",
+        "detail": "One-time payment for full support."
+      },
+      "revenue": {
+        "title": "% on accompaniment",
+        "detail": "Revenue sharing based on results and traction."
+      },
+      "subscription": {
+        "title": "Subscription",
+        "detail": "Monthly access to coaches, reviews, and workshops."
+      }
+    }
+  }
+}

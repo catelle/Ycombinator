@@ -1,5 +1,10 @@
+const withNextIntl = require('next-intl/plugin')('./src/i18n/request.ts');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  images: {
+    unoptimized: true
+  },
   async headers() {
     return [
       {
@@ -7,12 +12,12 @@ const nextConfig = {
         headers: [
           {
             key: 'Cache-Control',
-            value: 'no-store',
-          },
-        ],
-      },
+            value: 'no-store'
+          }
+        ]
+      }
     ];
-  },
+  }
 };
 
-module.exports = nextConfig;
+module.exports = withNextIntl(nextConfig);

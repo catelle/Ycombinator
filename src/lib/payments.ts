@@ -3,14 +3,14 @@ import { createId } from './ids';
 export interface PaymentChargeRequest {
   userId: string;
   amount: number;
-  currency: 'FCFA';
+  currency: 'FCFA' | 'XAF';
   type: 'unlock' | 'verification' | 'subscription' | 'match' | 'match_limit';
 }
 
 export interface PaymentChargeResult {
   success: boolean;
   reference: string;
-  provider: 'mobile-money' | 'cinetpay';
+  provider: 'mobile-money' | 'cinetpay' | 'payunit';
 }
 
 export async function chargeMobileMoney(request: PaymentChargeRequest): Promise<PaymentChargeResult> {

@@ -17,6 +17,47 @@ const COMMITMENT_SCORE: Record<CommitmentLevel, number> = {
   'full-time': 4
 };
 
+const SKILL_ALIASES: Record<string, string[]> = {
+  'react': ['reactjs', 'react.js'],
+  'node': ['nodejs', 'node.js'],
+  'javascript': ['js'],
+  'typescript': ['ts'],
+  'mongodb': ['mongo'],
+  'postgresql': ['postgres', 'psql'],
+  'vue': ['vuejs', 'vue.js'],
+  'angular': ['angularjs'],
+  'python': ['py'],
+  'machine learning': ['ml'],
+  'artificial intelligence': ['ai'],
+  'user interface': ['ui'],
+  'user experience': ['ux']
+};
+
+function normalizeSkill(skill: string): string {
+  const normalized = skill.trim().toLowerCase().replace(/[^a-z0-9\s]/g, '');
+  
+  for (const [canonical, aliases] of Object.entries(SKILL_ALIASES)) {
+    if (normalized === canonical || aliases.includes(normalized)) {
+      return canonical;
+    }
+  }
+  
+  return normalized;
+}
+
+function skillsMatch(skill1: string, skill2: string): boolean {
+  const norm1 = normalizeSkill(skill1);
+  const norm2 = normalizeSkill(skill2);
+  
+  if (norm1 === norm2) return true;
+  
+  if (norm1.includes(norm2) || norm2.includes(norm1)) {
+    return norm1.length > 2 && norm2.length > 2;
+  }
+  
+  return false;
+}
+
 export interface MatchScore {
   total: number;
   breakdown: {
@@ -35,13 +76,17 @@ export function calculateCompatibility(profile: Profile, candidate: Profile): Ma
   const roleScore = roleMatch ? 30 : profile.role === candidate.role ? 10 : 20;
   reasons.push(roleMatch ? 'Complementary roles' : 'Role alignment');
 
-  const profileSkills = new Set(profile.skills.map(skill => skill.trim().toLowerCase()).filter(Boolean));
-  const candidateSkills = new Set(candidate.skills.map(skill => skill.trim().toLowerCase()).filter(Boolean));
   let overlap = 0;
-  profileSkills.forEach(skill => {
-    if (candidateSkills.has(skill)) overlap += 1;
+  const profileSkills = profile.skills.filter(Boolean);
+  const candidateSkills = candidate.skills.filter(Boolean);
+  
+  profileSkills.forEach(pSkill => {
+    if (candidateSkills.some(cSkill => skillsMatch(pSkill, cSkill))) {
+      overlap += 1;
+    }
   });
-  const maxSkills = Math.max(1, Math.min(profileSkills.size, candidateSkills.size));
+  
+  const maxSkills = Math.max(1, Math.min(profileSkills.length, candidateSkills.length));
   const skillsScore = Math.round((overlap / maxSkills) * 30);
   if (overlap > 0) {
     reasons.push(`${overlap} shared skill${overlap > 1 ? 's' : ''}`);
@@ -92,6 +137,7 @@ export function getPublicProfile(profile: Profile): Profile {
     contactEmail: undefined,
     contactPhone: undefined,
     photoUrl: undefined,
+    verificationDocs: [],
     location: 'Location hidden'
   };
 }

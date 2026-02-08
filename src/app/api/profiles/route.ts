@@ -24,6 +24,7 @@ export async function GET() {
 function mapPublicProfile(profile: DbProfile): PublicProfile {
   return {
     id: profile._id,
+    alias: profile.alias,
     role: profile.role,
     skills: profile.skills || [],
     languages: profile.languages || [],

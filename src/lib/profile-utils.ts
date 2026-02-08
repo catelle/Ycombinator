@@ -1,6 +1,8 @@
 import type { Profile } from '@/types';
 
-export function isProfileComplete(profile: Pick<Profile, 'name' | 'role' | 'skills' | 'interests' | 'commitment' | 'location'> & { completed?: boolean }): boolean {
+export function isProfileComplete(
+  profile: Pick<Profile, 'name' | 'role' | 'skills' | 'interests' | 'commitment' | 'location' | 'verificationDocs'> & { completed?: boolean }
+): boolean {
   if (profile.completed === true) return true;
   if (profile.completed === false) return false;
 
@@ -10,6 +12,7 @@ export function isProfileComplete(profile: Pick<Profile, 'name' | 'role' | 'skil
   const hasInterests = typeof profile.interests === 'string' && profile.interests.trim().length > 0;
   const hasCommitment = typeof profile.commitment === 'string' && profile.commitment.trim().length > 0;
   const hasLocation = typeof profile.location === 'string' && profile.location.trim().length > 0;
+  const hasDocs = Array.isArray(profile.verificationDocs) && profile.verificationDocs.length > 0;
 
-  return hasName && hasRole && hasSkills && hasInterests && hasCommitment && hasLocation;
+  return hasName && hasRole && hasSkills && hasInterests && hasCommitment && hasLocation && hasDocs;
 }

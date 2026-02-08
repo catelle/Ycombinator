@@ -3,16 +3,18 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Home, Users, FileText, UserCircle, UsersRound } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 export default function MobileNav() {
   const pathname = usePathname();
+  const t = useTranslations('nav');
 
   const navItems = [
-    { href: '/', icon: Home, label: 'Home' },
-    { href: '/profiles', icon: Users, label: 'Profiles' },
-    { href: '/matches', icon: UsersRound, label: 'Matches' },
-    { href: '/requests', icon: FileText, label: 'Requests' },
-    { href: '/profile', icon: UserCircle, label: 'Profile' }
+    { href: '/', icon: Home, label: t('home') },
+    { href: '/profiles', icon: Users, label: t('profiles') },
+    { href: '/matches', icon: UsersRound, label: t('matches') },
+    { href: '/requests', icon: FileText, label: t('requests') },
+    { href: '/profile', icon: UserCircle, label: t('profile') }
   ];
 
   return (

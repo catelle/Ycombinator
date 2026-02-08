@@ -38,7 +38,8 @@ export async function POST(request: Request) {
     return NextResponse.json({
       score: result.total,
       reasons: result.reasons,
-      meetsThreshold: result.total >= MATCH_SCORE_THRESHOLD
+      meetsThreshold: result.total >= MATCH_SCORE_THRESHOLD,
+      threshold: MATCH_SCORE_THRESHOLD
     });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to test match' }, { status: 400 });
@@ -55,6 +56,7 @@ function mapProfile(profile: DbProfile): Profile {
     skills: profile.skills || [],
     languages: profile.languages || [],
     achievements: profile.achievements || [],
+    verificationDocs: profile.verificationDocs || [],
     interests: profile.interests,
     commitment: profile.commitment,
     location: profile.location,

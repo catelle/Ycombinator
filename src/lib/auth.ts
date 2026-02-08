@@ -4,10 +4,12 @@ import bcrypt from 'bcryptjs';
 import type { User } from '@/types';
 import { getCollection } from './db';
 import { createId } from './ids';
+import { ensureUserIndexes } from './indexes';
 
 const SESSION_COOKIE_NAME = 'nm_session';
 const SESSION_DURATION_MS = 1000 * 60 * 60 * 24 * 14; // 14 days
 const VERIFICATION_EXPIRATION_MS = 1000 * 60 * 10; // 10 minutes
+const PASSWORD_RESET_EXPIRATION_MS = 1000 * 60 * 15; // 15 minutes
 const DEFAULT_MATCH_LIMIT = Number(process.env.MATCH_BASE_LIMIT || '5');
 
 interface DbUser {
@@ -23,6 +25,8 @@ interface DbUser {
   verified?: boolean;
   suspended?: boolean;
   matchLimit?: number;
+  deletedAt?: Date;
+  deletedBy?: string;
 }
 
 interface DbSession {
@@ -43,6 +47,17 @@ interface DbEmailVerification {
   usedAt?: Date;
 }
 
+interface DbPasswordReset {
+  _id: string;
+  userId: string;
+  email: string;
+  codeHash: string;
+  expiresAt: Date;
+  createdAt: Date;
+  attempts: number;
+  usedAt?: Date;
+}
+
 function hashCode(code: string): string {
   return createHash('sha256').update(code).digest('hex');
 }
@@ -52,6 +67,7 @@ export function createVerificationCode(): string {
 }
 
 export async function createUser(payload: { name: string; email: string; phone: string; password: string }): Promise<User> {
+  await ensureUserIndexes();
   const users = await getCollection<DbUser>('users');
   const passwordHash = await bcrypt.hash(payload.password, 10);
   const user: DbUser = {
@@ -81,7 +97,22 @@ export async function updateUserVerification(email: string): Promise<void> {
 
 export async function findUserByEmail(email: string): Promise<DbUser | null> {
   const users = await getCollection<DbUser>('users');
+  return users.findOne({ email: email.toLowerCase(), deletedAt: { $exists: false } });
+}
+
+export async function findUserByEmailIncludingDeleted(email: string): Promise<DbUser | null> {
+  const users = await getCollection<DbUser>('users');
   return users.findOne({ email: email.toLowerCase() });
+}
+
+export async function findUserByPhone(phone: string): Promise<DbUser | null> {
+  const users = await getCollection<DbUser>('users');
+  return users.findOne({ phone, deletedAt: { $exists: false } });
+}
+
+export async function findUserByPhoneIncludingDeleted(phone: string): Promise<DbUser | null> {
+  const users = await getCollection<DbUser>('users');
+  return users.findOne({ phone });
 }
 
 export async function updateUserPassword(email: string, password: string): Promise<void> {
@@ -94,6 +125,7 @@ export async function updateUserPassword(email: string, password: string): Promi
 }
 
 export async function updateUserBasics(email: string, payload: { name: string; phone: string }): Promise<void> {
+  await ensureUserIndexes();
   const users = await getCollection<DbUser>('users');
   await users.updateOne(
     { email: email.toLowerCase() },
@@ -105,6 +137,9 @@ export async function authenticateUser(email: string, password: string): Promise
   const user = await findUserByEmail(email);
   if (!user) {
     throw new Error('Invalid email or password');
+  }
+  if (user.deletedAt) {
+    throw new Error('Account deleted');
   }
   if (user.suspended || user.role === 'suspended') {
     throw new Error('Account suspended');
@@ -144,6 +179,26 @@ export async function storeEmailVerification(userId: string, email: string, code
   await verifications.insertOne(token);
 }
 
+export async function storePasswordReset(userId: string, email: string, code: string): Promise<void> {
+  const resets = await getCollection<DbPasswordReset>('passwordResets');
+  await resets.updateMany(
+    { email: email.toLowerCase(), usedAt: { $exists: false } },
+    { $set: { usedAt: new Date() } }
+  );
+
+  const token: DbPasswordReset = {
+    _id: createId(),
+    userId,
+    email: email.toLowerCase(),
+    codeHash: hashCode(code),
+    expiresAt: new Date(Date.now() + PASSWORD_RESET_EXPIRATION_MS),
+    createdAt: new Date(),
+    attempts: 0
+  };
+
+  await resets.insertOne(token);
+}
+
 export async function verifyEmailCode(email: string, code: string): Promise<boolean> {
   const verifications = await getCollection<DbEmailVerification>('emailVerifications');
   const token = await verifications.findOne(
@@ -166,6 +221,29 @@ export async function verifyEmailCode(email: string, code: string): Promise<bool
   }
 
   return isMatch;
+}
+
+export async function resetPasswordWithCode(email: string, code: string, password: string): Promise<boolean> {
+  const resets = await getCollection<DbPasswordReset>('passwordResets');
+  const token = await resets.findOne(
+    { email: email.toLowerCase(), usedAt: { $exists: false } },
+    { sort: { createdAt: -1 } }
+  );
+
+  if (!token) return false;
+  if (token.expiresAt.getTime() < Date.now()) return false;
+
+  const isMatch = token.codeHash === hashCode(code);
+  const update: Partial<DbPasswordReset> = { attempts: token.attempts + 1 };
+  if (isMatch) {
+    update.usedAt = new Date();
+  }
+  await resets.updateOne({ _id: token._id }, { $set: update });
+
+  if (!isMatch) return false;
+
+  await updateUserPassword(email, password);
+  return true;
 }
 
 export async function createSession(userId: string): Promise<string> {
@@ -222,7 +300,7 @@ export async function getSessionUser(): Promise<User | null> {
 
   const users = await getCollection<DbUser>('users');
   const user = await users.findOne({ _id: session.userId });
-  if (!user || user.suspended || user.role === 'suspended') return null;
+  if (!user || user.deletedAt || user.suspended || user.role === 'suspended') return null;
   return mapUser(user);
 }
 
@@ -245,6 +323,13 @@ export function mapUser(user: DbUser): User {
     verified: user.verified,
     suspended: user.suspended,
     emailVerified: user.emailVerified,
-    matchLimit: user.matchLimit ?? DEFAULT_MATCH_LIMIT
+    matchLimit: user.matchLimit ?? DEFAULT_MATCH_LIMIT,
+    deletedAt: user.deletedAt,
+    deletedBy: user.deletedBy
   };
+}
+
+export async function clearUserSessions(userId: string): Promise<void> {
+  const sessions = await getCollection<DbSession>('sessions');
+  await sessions.deleteMany({ userId });
 }

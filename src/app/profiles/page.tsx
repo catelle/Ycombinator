@@ -6,6 +6,7 @@ import Image from 'next/image';
 import BackgroundImage from '@/components/BackgroundImage';
 import { useSimpleAuth as useAuth } from '@/hooks/useSimpleAuth';
 import type { PublicProfile } from '@/types';
+import { useTranslations } from 'next-intl';
 
 const AVATARS = [
   '/images/anon-avatar.svg',
@@ -37,8 +38,11 @@ const hashString = (value: string) => {
 };
 
 const pickFrom = (value: string, list: string[]) => list[hashString(value) % list.length];
+const getDisplayName = (profile: PublicProfile) => profile.alias?.trim() || pickFrom(profile.id, USERNAMES);
 
 export default function ProfilesPage() {
+  const t = useTranslations('profiles');
+  const common = useTranslations('common');
   const { user } = useAuth();
   const [profiles, setProfiles] = useState<PublicProfile[]>([]);
   const [status, setStatus] = useState<'loading' | 'error' | 'idle'>('loading');
@@ -68,20 +72,20 @@ export default function ProfilesPage() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 animate-fade-up">
         <div className="mb-6 sm:mb-8">
           <h1 className="text-3xl text-white sm:text-4xl font-bold mb-2">
-            Founder <span className="text-yellow-500">Profiles</span>
+            {t('title')} <span className="text-yellow-500">{t('titleHighlight')}</span>
           </h1>
           <p className=" text-gray-100 text-sm sm:text-base">
-            Browse anonymous founder profiles. Identity and contact details stay hidden until a match is unlocked.
+            {t('subtitle')}
           </p>
           {!user && (
             <p className="text-xs sm:text-sm text-[var(--text-muted)] mt-2">
-              Sign in to test match compatibility and request a match.
+              {t('signInHint')}
             </p>
           )}
         </div>
 
-        {status === 'loading' && <div className="text-yellow-500">Loading profiles...</div>}
-        {status === 'error' && <div className="text-red-500">Unable to load profiles.</div>}
+        {status === 'loading' && <div className="text-yellow-500">{t('loading')}</div>}
+        {status === 'error' && <div className="text-red-500">{t('error')}</div>}
 
         <div className="scrollable-list">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
@@ -100,8 +104,8 @@ export default function ProfilesPage() {
                     className="rounded-full border border-[var(--border)]"
                   />
                   <div>
-                    <p className="text-base sm:text-lg font-semibold">{pickFrom(profile.id, USERNAMES)}</p>
-                    <p className="text-xs sm:text-sm text-[var(--text-muted)] capitalize">{profile.role}</p>
+                    <p className="text-base sm:text-lg font-semibold">{getDisplayName(profile)}</p>
+                    <p className="text-xs sm:text-sm text-[var(--text-muted)] capitalize">{common(`roles.${profile.role}`)}</p>
                   </div>
                 </div>
 
@@ -119,7 +123,7 @@ export default function ProfilesPage() {
                 <p className="text-[var(--text-muted)] text-xs sm:text-sm line-clamp-3 mb-3 sm:mb-4">{profile.interests}</p>
 
                 <div className="flex items-center justify-between text-xs text-[var(--text-muted)]">
-                  <span className="capitalize">{profile.commitment}</span>
+                  <span className="capitalize">{common(`commitment.${profile.commitment}`)}</span>
                   <span>{profile.location}</span>
                 </div>
               </Link>
@@ -128,7 +132,7 @@ export default function ProfilesPage() {
         </div>
 
         {status === 'idle' && profiles.length === 0 && (
-          <div className="text-center text-[var(--text-muted)] mt-8">No profiles available yet.</div>
+          <div className="text-center text-[var(--text-muted)] mt-8">{t('empty')}</div>
         )}
       </div>
     </BackgroundImage>

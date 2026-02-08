@@ -1,4 +1,4 @@
-export const MATCH_SCORE_THRESHOLD = Number(process.env.MATCH_SCORE_THRESHOLD || '80');
+export const MATCH_SCORE_THRESHOLD = Number(process.env.MATCH_SCORE_THRESHOLD || '50');
 const EXPIRATION_DAYS = Number(process.env.MATCH_REQUEST_EXPIRATION_DAYS || '3');
 export const MATCH_REQUEST_EXPIRATION_MS = 1000 * 60 * 60 * 24 * EXPIRATION_DAYS;
 export const MATCH_BASE_LIMIT = Number(process.env.MATCH_BASE_LIMIT || '5');

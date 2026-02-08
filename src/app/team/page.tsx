@@ -6,6 +6,7 @@ import BackgroundImage from '@/components/BackgroundImage';
 import { useSimpleAuth as useAuth } from '@/hooks/useSimpleAuth';
 import type { MatchState, Profile, Team } from '@/types';
 import { ShieldCheck, Users, Star } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface UnlockedMatch {
   matchId: string;
@@ -14,6 +15,8 @@ interface UnlockedMatch {
 }
 
 export default function TeamPage() {
+  const t = useTranslations('team');
+  const common = useTranslations('common');
   const { user, loading } = useAuth();
   const [team, setTeam] = useState<Team | null>(null);
   const [unlocked, setUnlocked] = useState<UnlockedMatch[]>([]);
@@ -86,8 +89,21 @@ export default function TeamPage() {
   };
 
   const requestVerification = async () => {
-    await fetch('/api/verification/request', { method: 'POST' });
-    loadTeam();
+    try {
+      const response = await fetch('/api/verification/request', { method: 'POST' });
+      const data = (await response.json()) as { paymentUrl?: string; error?: string };
+      if (!response.ok) {
+        alert(data.error || t('verification.paymentFailed'));
+        return;
+      }
+      if (data.paymentUrl) {
+        window.location.href = data.paymentUrl;
+        return;
+      }
+      loadTeam();
+    } catch (error) {
+      alert(t('verification.paymentFailed'));
+    }
   };
 
   const requestAccompaniment = async (type: 'incubator' | 'accelerator' | 'platform', providerName?: string) => {
@@ -96,14 +112,14 @@ export default function TeamPage() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ type, providerName })
     });
-    alert('Request submitted. Our team will contact you soon.');
+    alert(t('accompaniment.requestSubmitted'));
   };
 
   if (loading) {
     return (
       <BackgroundImage imageIndex={5} overlay="gradient" overlayOpacity={0.75}>
         <div className="flex items-center justify-center">
-          <div className="text-[var(--accent-strong)] text-xl">Loading...</div>
+          <div className="text-[var(--accent-strong)] text-xl">{common('loading')}</div>
         </div>
       </BackgroundImage>
     );
@@ -114,9 +130,9 @@ export default function TeamPage() {
       <BackgroundImage imageIndex={5} overlay="gradient" overlayOpacity={0.75}>
         <div className="flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-[var(--text)] mb-4">Please sign in to manage your team</h1>
+            <h1 className="text-2xl font-bold text-[var(--text)] mb-4">{t('signInTitle')}</h1>
             <Link href="/auth" className="text-yellow-600 hover:text-yellow-700">
-              Go to Sign In
+              {common('goToSignIn')}
             </Link>
           </div>
         </div>
@@ -129,24 +145,24 @@ export default function TeamPage() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 animate-fade-up">
         <div className="mb-6 sm:mb-8">
           <h1 className="text-3xl text-white sm:text-4xl font-bold mb-2">
-            Team <span className="text-yellow-500">Locking</span>
+            {t('title')} <span className="text-yellow-500">{t('titleHighlight')}</span>
           </h1>
-          <p className="text-gray-300">Create a team, invite unlocked matches, and lock your cofounder group.</p>
+          <p className="text-gray-300">{t('subtitle')}</p>
         </div>
 
         {status === 'error' && (
-          <div className="text-red-500 mb-4">Unable to load team data.</div>
+          <div className="text-red-500 mb-4">{t('error')}</div>
         )}
 
         {!team && (
           <div className="glass-card rounded-2xl p-6 mb-8">
-            <h2 className="text-2xl font-bold mb-2">Create your team</h2>
-            <p className="text-[var(--text-muted)] mb-4">Teams can have up to 5 members.</p>
+            <h2 className="text-2xl font-bold mb-2">{t('create.title')}</h2>
+            <p className="text-[var(--text-muted)] mb-4">{t('create.subtitle')}</p>
             <button
               onClick={createTeam}
               className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-6 py-3 rounded-xl font-bold hover:from-yellow-500 hover:to-yellow-700 transition-all"
             >
-              Create Team
+              {t('create.action')}
             </button>
           </div>
         )}
@@ -156,7 +172,7 @@ export default function TeamPage() {
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
                 <Users className="h-5 w-5 text-yellow-500" />
-                <h2 className="text-2xl font-bold">Your Team</h2>
+                <h2 className="text-2xl font-bold">{t('team.title')}</h2>
               </div>
               <span className="bg-yellow-400/20 text-yellow-600 px-3 py-1 rounded-full text-sm font-bold capitalize">
                 {team.status}
@@ -165,7 +181,7 @@ export default function TeamPage() {
             <div className="space-y-3 text-[var(--text-muted)]">
               {team.memberIds.map(memberId => {
                 const match = unlocked.find(item => item.profile?.userId === memberId);
-                const name = memberId === user.id ? user.name : match?.profile?.name || 'Member (hidden)';
+                const name = memberId === user.id ? user.name : match?.profile?.name || t('team.hiddenMember');
                 return (
                   <div key={memberId} className="rounded-xl p-3 border border-[var(--border)] bg-[var(--surface-muted)]">
                     {name}
@@ -178,7 +194,7 @@ export default function TeamPage() {
                 onClick={lockTeam}
                 className="mt-6 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-6 py-3 rounded-xl font-bold hover:from-yellow-500 hover:to-yellow-700 transition-all"
               >
-                Lock Team
+                {t('team.lock')}
               </button>
             )}
           </div>
@@ -186,17 +202,17 @@ export default function TeamPage() {
 
         {team?.status === 'forming' && (
           <div className="glass-card rounded-2xl p-6 mb-8">
-            <h2 className="text-2xl font-bold mb-4">Invite unlocked matches</h2>
+            <h2 className="text-2xl font-bold mb-4">{t('invite.title')}</h2>
             {unlocked.length === 0 ? (
-              <p className="text-[var(--text-muted)]">No unlocked matches yet. Unlock a match to invite them.</p>
+              <p className="text-[var(--text-muted)]">{t('invite.empty')}</p>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {unlocked.map(match => {
                   const alreadyMember = Boolean(match.profile?.userId && team.memberIds.includes(match.profile.userId));
                   return (
                   <div key={match.matchId} className="rounded-2xl p-5 border border-[var(--border)] bg-[var(--surface-muted)]">
-                    <h3 className="text-lg font-bold text-[var(--text)]">{match.profile?.name || 'Hidden profile'}</h3>
-                    <p className="text-[var(--text-muted)] capitalize">{match.profile?.role}</p>
+                    <h3 className="text-lg font-bold text-[var(--text)]">{match.profile?.name || t('invite.hiddenProfile')}</h3>
+                    <p className="text-[var(--text-muted)] capitalize">{match.profile?.role ? common(`roles.${match.profile.role}`) : ''}</p>
                     <div className="flex flex-wrap gap-2 mt-3">
                       {match.profile?.skills.slice(0, 3).map(skill => (
                         <span key={skill} className="bg-yellow-400/20 text-yellow-600 px-3 py-1 rounded-full text-xs font-medium">
@@ -210,13 +226,13 @@ export default function TeamPage() {
                         disabled={alreadyMember}
                         className="flex-1 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black py-2 rounded-xl font-bold hover:from-yellow-500 hover:to-yellow-700 transition-all disabled:opacity-60"
                       >
-                        {alreadyMember ? 'Already in Team' : 'Invite to Team'}
+                        {alreadyMember ? t('invite.alreadyMember') : t('invite.action')}
                       </button>
                       <button
                         onClick={() => lockMatch(match.matchId)}
                         className="flex-1 bg-[var(--surface)] hover:bg-[var(--surface-muted)] text-[var(--text)] py-2 rounded-xl font-bold transition-all"
                       >
-                        Lock 1:1
+                        {t('invite.lockOne')}
                       </button>
                     </div>
                   </div>
@@ -232,10 +248,10 @@ export default function TeamPage() {
             <div className="glass-card rounded-2xl p-6">
               <div className="flex items-center gap-3 mb-4">
                 <ShieldCheck className="h-5 w-5 text-yellow-400" />
-                <h2 className="text-2xl font-bold">Identity Verification (Optional)</h2>
+                <h2 className="text-2xl font-bold">{t('verification.title')}</h2>
               </div>
               <p className="text-[var(--text-muted)] mb-4">
-                Verification is optional but helps build trust between cofounders.
+                {t('verification.subtitle')}
               </p>
               <div className="flex items-center gap-4">
                 <button
@@ -243,59 +259,59 @@ export default function TeamPage() {
                   disabled={verificationStatus?.verified || verificationStatus?.requestStatus === 'pending'}
                   className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-6 py-3 rounded-xl font-bold hover:from-yellow-500 hover:to-yellow-700 transition-all disabled:opacity-60"
                 >
-                  Request Verification · 2,000 FCFA
+                  {t('verification.request')}
                 </button>
                 {verificationStatus?.verified && (
                   <span className="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm font-bold">
-                    Verified
+                    {t('verification.verified')}
                   </span>
                 )}
                 {verificationStatus?.requestStatus === 'pending' && (
                   <span className="bg-yellow-400/20 text-yellow-400 px-3 py-1 rounded-full text-sm font-bold">
-                    Pending
+                    {t('verification.pending')}
                   </span>
                 )}
               </div>
               <p className="text-[var(--text-muted)] text-sm mt-4">
-                The platform is not responsible for scams if verification is skipped.
+                {t('verification.disclaimer')}
               </p>
             </div>
 
             <div className="glass-card rounded-2xl p-6">
               <div className="flex items-center gap-3 mb-4">
                 <Star className="h-5 w-5 text-yellow-400" />
-                <h2 className="text-2xl font-bold">Startup Accompaniment</h2>
+                <h2 className="text-2xl font-bold">{t('accompaniment.title')}</h2>
               </div>
               <p className="text-[var(--text-muted)] mb-6">
-                Choose an incubator or accelerator, or request platform accompaniment.
+                {t('accompaniment.subtitle')}
               </p>
               <Link
                 href="/accompaniment"
                 className="inline-flex mb-6 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-5 py-2 rounded-xl font-bold hover:from-yellow-500 hover:to-yellow-700 transition-all"
               >
-                View Accompaniment Options
+                {t('accompaniment.viewOptions')}
               </Link>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <button
-                  onClick={() => requestAccompaniment('incubator', 'Silicon Savannah Hub')}
+                  onClick={() => requestAccompaniment('incubator', t('accompaniment.options.incubatorOne'))}
                   className="bg-[var(--surface-muted)] border border-[var(--border)] rounded-xl p-4 text-left hover:border-yellow-500/40 transition-all"
                 >
-                  <p className="font-bold text-[var(--text)]">Silicon Savannah Hub</p>
-                  <p className="text-sm text-[var(--text-muted)]">Incubator</p>
+                  <p className="font-bold text-[var(--text)]">{t('accompaniment.options.incubatorOne')}</p>
+                  <p className="text-sm text-[var(--text-muted)]">{t('accompaniment.incubator')}</p>
                 </button>
                 <button
-                  onClick={() => requestAccompaniment('accelerator', 'Pan-Africa Launch')}
+                  onClick={() => requestAccompaniment('accelerator', t('accompaniment.options.acceleratorOne'))}
                   className="bg-[var(--surface-muted)] border border-[var(--border)] rounded-xl p-4 text-left hover:border-yellow-500/40 transition-all"
                 >
-                  <p className="font-bold text-[var(--text)]">Pan-Africa Launch</p>
-                  <p className="text-sm text-[var(--text-muted)]">Accelerator</p>
+                  <p className="font-bold text-[var(--text)]">{t('accompaniment.options.acceleratorOne')}</p>
+                  <p className="text-sm text-[var(--text-muted)]">{t('accompaniment.accelerator')}</p>
                 </button>
                 <button
                   onClick={() => requestAccompaniment('platform')}
                   className="bg-[var(--surface-muted)] border border-[var(--border)] rounded-xl p-4 text-left hover:border-yellow-500/40 transition-all"
                 >
-                  <p className="font-bold text-[var(--text)]">Platform Accompaniment</p>
-                  <p className="text-sm text-[var(--text-muted)]">Let the platform guide you</p>
+                  <p className="font-bold text-[var(--text)]">{t('accompaniment.platformTitle')}</p>
+                  <p className="text-sm text-[var(--text-muted)]">{t('accompaniment.platformSubtitle')}</p>
                 </button>
               </div>
             </div>

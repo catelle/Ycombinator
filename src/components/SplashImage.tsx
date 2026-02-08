@@ -1,3 +1,6 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import { getSplashImage } from '@/lib/splash-images';
 
 interface SplashImageProps {
@@ -8,14 +11,25 @@ interface SplashImageProps {
 }
 
 export default function SplashImage({ index, className = '', size, overlayClassName }: SplashImageProps) {
-  const { src, alt } = getSplashImage(index);
+  const [mounted, setMounted] = useState(false);
+  const [imageData, setImageData] = useState({ src: '', alt: '' });
+
+  useEffect(() => {
+    setMounted(true);
+    setImageData(getSplashImage(index));
+  }, [index]);
+
+  if (!mounted) {
+    return null;
+  }
+
   const overlay = overlayClassName ?? 'bg-[var(--background)]/65';
 
   return (
     <div className={`relative overflow-hidden ${className}`}>
       <img
-        src={src}
-        alt={alt}
+        src={imageData.src}
+        alt={imageData.alt}
         width={size}
         height={size}
         loading="lazy"

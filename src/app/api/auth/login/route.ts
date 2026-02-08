@@ -44,6 +44,9 @@ export async function POST(request: Request) {
     if (error instanceof Error && error.message === 'Account suspended') {
       return NextResponse.json({ error: 'Account suspended' }, { status: 403 });
     }
+    if (error instanceof Error && error.message === 'Account deleted') {
+      return NextResponse.json({ error: 'Account deleted' }, { status: 403 });
+    }
     return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
   }
 }
@@ -62,6 +65,7 @@ async function ensureBaseProfile(user: User) {
     skills: [],
     languages: [],
     achievements: [],
+    verificationDocs: [],
     interests: 'Exploring new ideas',
     commitment: 'exploring',
     location: 'Remote',

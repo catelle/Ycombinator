@@ -130,6 +130,9 @@ async function upsertMatch(
 ) {
   const existing = await matches.findOne({ userId, matchedUserId });
   if (existing) {
+    if (existing.state === 'CANCELLED') {
+      return;
+    }
     await matches.updateOne(
       { _id: existing._id },
       { $set: { state: 'UNLOCKED', score, updatedAt: now } }

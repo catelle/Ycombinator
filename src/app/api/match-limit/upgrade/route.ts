@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { requireSessionUser } from '@/lib/auth';
 import { getCollection } from '@/lib/db';
 import { createId } from '@/lib/ids';
-import { initCinetPayPayment } from '@/lib/cinetpay';
+import { initPayunitPayment } from '@/lib/payunit';
 import { MATCH_LIMIT_PRICE_XAF, MATCH_LIMIT_INCREMENT } from '@/lib/match-utils';
 import type { Payment } from '@/types';
 
@@ -15,15 +15,10 @@ export async function POST() {
     const user = await requireSessionUser();
     const payments = await getCollection<DbPayment>('payments');
 
-    const transactionId = `limit-${createId()}`;
-    const charge = await initCinetPayPayment({
+    const transactionId = `limit${createId().replace(/-/g, '')}`;
+    const charge = await initPayunitPayment({
       transactionId,
-      amount: MATCH_LIMIT_PRICE_XAF,
-      description: 'Match limit upgrade',
-      customerName: user.name,
-      customerEmail: user.email,
-      customerPhone: user.phone,
-      metadata: { userId: user.id, increment: MATCH_LIMIT_INCREMENT }
+      amount: MATCH_LIMIT_PRICE_XAF
     });
 
     if (!charge.success || !charge.paymentUrl) {
@@ -34,10 +29,10 @@ export async function POST() {
       _id: createId(),
       userId: user.id,
       amount: MATCH_LIMIT_PRICE_XAF,
-      currency: 'FCFA',
+      currency: 'XAF',
       type: 'match_limit',
       status: 'pending',
-      provider: 'cinetpay',
+      provider: 'payunit',
       reference: transactionId,
       createdAt: new Date(),
       metadata: { increment: MATCH_LIMIT_INCREMENT }

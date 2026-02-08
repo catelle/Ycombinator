@@ -4,30 +4,17 @@ import { useState } from 'react';
 import Link from 'next/link';
 import SplashImage from '@/components/SplashImage';
 import { useSimpleAuth as useAuth } from '@/hooks/useSimpleAuth';
+import { useTranslations } from 'next-intl';
 
 const LOCAL_PROGRAMS = [
-  { name: 'Silicon Savannah Hub', type: 'Incubator', region: 'East Africa' },
-  { name: 'Douala Founder Lab', type: 'Incubator', region: 'Cameroon' },
-  { name: 'Yaoundé Growth Studio', type: 'Accelerator', region: 'Cameroon' },
-  { name: 'Pan-Africa Launch', type: 'Accelerator', region: 'Africa-wide' }
-];
-
-const MONETIZATION = [
-  {
-    title: 'Frais Fixe',
-    detail: 'Un paiement unique pour un accompagnement complet.'
-  },
-  {
-    title: '% sur accompagnement',
-    detail: 'Partage de revenus basé sur les résultats et la traction.'
-  },
-  {
-    title: 'Abonnement',
-    detail: 'Accès mensuel aux coachs, revues et ateliers.'
-  }
-];
+  { name: 'Silicon Savannah Hub', type: 'incubator', region: 'East Africa' },
+  { name: 'Douala Founder Lab', type: 'incubator', region: 'Cameroon' },
+  { name: 'Yaoundé Growth Studio', type: 'accelerator', region: 'Cameroon' },
+  { name: 'Pan-Africa Launch', type: 'accelerator', region: 'Africa-wide' }
+] as const;
 
 export default function AccompanimentPage() {
+  const t = useTranslations('accompaniment');
   const { user } = useAuth();
   const [message, setMessage] = useState('');
 
@@ -41,14 +28,14 @@ export default function AccompanimentPage() {
       });
 
       if (!response.ok) {
-        setMessage('Please sign in and complete your team before requesting accompaniment.');
+        setMessage(t('errors.signInRequired'));
         return;
       }
 
-      setMessage('Request submitted. Our team will contact you soon.');
+      setMessage(t('messages.requestSubmitted'));
     } catch (error) {
       console.error('Failed to request accompaniment', error);
-      setMessage('Unable to submit request right now.');
+      setMessage(t('errors.submitFailed'));
     }
   };
 
@@ -69,31 +56,31 @@ export default function AccompanimentPage() {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
           <div>
             <h1 className="text-4xl font-bold mb-2">
-              Accompagnement <span className="text-yellow-500">Startup</span>
+              {t('title')} <span className="text-yellow-500">{t('titleHighlight')}</span>
             </h1>
             <p className="text-[var(--text-muted)]">
-              Après formation d’une team, choisissez un incubateur local ou l’accompagnement de la plateforme.
+              {t('subtitle')}
             </p>
           </div>
           <Link href="/team" className="text-yellow-600 hover:text-yellow-700">
-            Back to Team
+            {t('backToTeam')}
           </Link>
         </div>
 
         {message && <div className="text-sm text-[var(--text-muted)] mb-6">{message}</div>}
 
         <section className="glass-card rounded-3xl p-6 mb-8">
-          <h2 className="text-2xl font-bold mb-4">Incubateurs & accompagnateurs locaux</h2>
+          <h2 className="text-2xl font-bold mb-4">{t('local.title')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {LOCAL_PROGRAMS.map(program => (
               <div key={program.name} className="border border-[var(--border)] rounded-2xl p-4 bg-[var(--surface-muted)]">
                 <p className="text-lg font-bold text-[var(--text)]">{program.name}</p>
-                <p className="text-sm text-[var(--text-muted)]">{program.type} · {program.region}</p>
+                <p className="text-sm text-[var(--text-muted)]">{t(`local.types.${program.type}`)} · {program.region}</p>
                 <button
-                  onClick={() => requestAccompaniment(program.type === 'Incubator' ? 'incubator' : 'accelerator', program.name)}
+                  onClick={() => requestAccompaniment(program.type, program.name)}
                   className="mt-4 w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-black py-2 rounded-xl font-bold hover:from-yellow-500 hover:to-yellow-700 transition-all"
                 >
-                  Request This Program
+                  {t('actions.requestProgram')}
                 </button>
               </div>
             ))}
@@ -101,30 +88,36 @@ export default function AccompanimentPage() {
         </section>
 
         <section className="glass-card rounded-3xl p-6 mb-8">
-          <h2 className="text-2xl font-bold mb-4">Accompagnement par la plateforme</h2>
+          <h2 className="text-2xl font-bold mb-4">{t('platform.title')}</h2>
           <p className="text-[var(--text-muted)] mb-4">
-            Bénéficiez d’un suivi direct par nos experts produit, growth et fundraising.
+            {t('platform.subtitle')}
           </p>
           <button
             onClick={() => requestAccompaniment('platform')}
             className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-6 py-3 rounded-xl font-bold hover:from-yellow-500 hover:to-yellow-700 transition-all"
           >
-            Request Platform Accompaniment
+            {t('actions.requestPlatform')}
           </button>
           {!user && (
-            <p className="text-xs text-[var(--text-muted)] mt-3">Sign in to request accompaniment.</p>
+            <p className="text-xs text-[var(--text-muted)] mt-3">{t('platform.signInHint')}</p>
           )}
         </section>
 
         <section className="glass-card rounded-3xl p-6">
-          <h2 className="text-2xl font-bold mb-4">Monétisation</h2>
+          <h2 className="text-2xl font-bold mb-4">{t('monetization.title')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {MONETIZATION.map(option => (
-              <div key={option.title} className="border border-[var(--border)] rounded-2xl p-4 bg-[var(--surface-muted)]">
-                <p className="text-lg font-bold">{option.title}</p>
-                <p className="text-sm text-[var(--text-muted)] mt-2">{option.detail}</p>
-              </div>
-            ))}
+            <div className="border border-[var(--border)] rounded-2xl p-4 bg-[var(--surface-muted)]">
+              <p className="text-lg font-bold">{t('monetization.fixed.title')}</p>
+              <p className="text-sm text-[var(--text-muted)] mt-2">{t('monetization.fixed.detail')}</p>
+            </div>
+            <div className="border border-[var(--border)] rounded-2xl p-4 bg-[var(--surface-muted)]">
+              <p className="text-lg font-bold">{t('monetization.revenue.title')}</p>
+              <p className="text-sm text-[var(--text-muted)] mt-2">{t('monetization.revenue.detail')}</p>
+            </div>
+            <div className="border border-[var(--border)] rounded-2xl p-4 bg-[var(--surface-muted)]">
+              <p className="text-lg font-bold">{t('monetization.subscription.title')}</p>
+              <p className="text-sm text-[var(--text-muted)] mt-2">{t('monetization.subscription.detail')}</p>
+            </div>
           </div>
         </section>
       </div>

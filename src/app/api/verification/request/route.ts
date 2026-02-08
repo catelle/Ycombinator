@@ -3,8 +3,7 @@ import type { Payment, VerificationRequest, Team } from '@/types';
 import { requireSessionUser } from '@/lib/auth';
 import { getCollection } from '@/lib/db';
 import { createId } from '@/lib/ids';
-import { chargeMobileMoney } from '@/lib/payments';
-import { logAudit } from '@/lib/audit';
+import { initPayunitPayment } from '@/lib/payunit';
 
 interface DbPayment extends Omit<Payment, 'id'> {
   _id: string;
@@ -33,15 +32,20 @@ export async function POST() {
       return NextResponse.json({ error: 'Team must be locked before verification' }, { status: 400 });
     }
 
-    const charge = await chargeMobileMoney({
-      userId: user.id,
-      amount: 2000,
-      currency: 'FCFA',
-      type: 'verification'
+    const requests = await getCollection<DbVerificationRequest>('verificationRequests');
+    const existingRequest = await requests.findOne({ userId: user.id, status: 'pending' });
+    if (existingRequest) {
+      return NextResponse.json({ error: 'Verification already requested' }, { status: 400 });
+    }
+
+    const transactionId = `verify${createId().replace(/-/g, '')}`;
+    const charge = await initPayunitPayment({
+      transactionId,
+      amount: 2000
     });
 
-    if (!charge.success) {
-      return NextResponse.json({ error: 'Payment failed' }, { status: 402 });
+    if (!charge.success || !charge.paymentUrl) {
+      return NextResponse.json({ error: charge.error || 'Payment failed' }, { status: 402 });
     }
 
     const payments = await getCollection<DbPayment>('payments');
@@ -50,38 +54,16 @@ export async function POST() {
       _id: paymentId,
       userId: user.id,
       amount: 2000,
-      currency: 'FCFA',
+      currency: 'XAF',
       type: 'verification',
-      status: 'succeeded',
-      provider: charge.provider,
-      reference: charge.reference,
-      createdAt: new Date()
-    });
-
-    await logAudit({
-      actorId: user.id,
-      action: 'payment',
-      metadata: { type: 'verification', amount: 2000, reference: charge.reference }
-    });
-
-    const requests = await getCollection<DbVerificationRequest>('verificationRequests');
-    const requestId = createId();
-    await requests.insertOne({
-      _id: requestId,
-      userId: user.id,
       status: 'pending',
-      amount: 2000,
+      provider: 'payunit',
+      reference: transactionId,
       createdAt: new Date(),
-      updatedAt: new Date()
+      metadata: { paymentId }
     });
 
-    await logAudit({
-      actorId: user.id,
-      action: 'verification',
-      metadata: { requestId, paymentId }
-    });
-
-    return NextResponse.json({ ok: true, requestId });
+    return NextResponse.json({ paymentUrl: charge.paymentUrl });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to request verification' }, { status: 400 });
   }

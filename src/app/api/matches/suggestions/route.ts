@@ -92,6 +92,7 @@ export async function GET(request: Request) {
       if (isPremium && matchScore.total < 80) continue;
 
       const existingMatch = matchMap.get(candidate.userId);
+      if (existingMatch?.state === 'CANCELLED') continue;
       if (existingMatch?.decision === 'rejected') continue;
       if (existingMatch?.state === 'LOCKED') continue;
 
@@ -152,6 +153,7 @@ function mapProfile(profile: DbProfile): Profile {
     skills: profile.skills,
     languages: profile.languages || [],
     achievements: profile.achievements || [],
+    verificationDocs: profile.verificationDocs || [],
     interests: profile.interests,
     commitment: profile.commitment,
     location: profile.location,

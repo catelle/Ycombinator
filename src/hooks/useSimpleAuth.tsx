@@ -15,6 +15,8 @@ interface AuthContextValue {
   register: (payload: { name: string; email: string; phone: string; password: string }) => Promise<AuthResponse>;
   verifyEmail: (email: string, code: string) => Promise<void>;
   resendVerification: (email: string) => Promise<void>;
+  requestPasswordReset: (email: string) => Promise<{ emailSent?: boolean }>;
+  resetPassword: (email: string, code: string, password: string) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   refreshSession: () => Promise<void>;
@@ -86,6 +88,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
+  const requestPasswordReset = useCallback(async (email: string) => {
+    const response = await fetch('/api/auth/password/request', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+
+    if (!response.ok) {
+      const error = (await response.json()) as { error?: string };
+      throw new Error(error.error || 'Failed to request password reset');
+    }
+
+    return (await response.json()) as { emailSent?: boolean };
+  }, []);
+
+  const resetPassword = useCallback(async (email: string, code: string, password: string) => {
+    const response = await fetch('/api/auth/password/reset', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, code, password })
+    });
+
+    if (!response.ok) {
+      const error = (await response.json()) as { error?: string };
+      throw new Error(error.error || 'Failed to reset password');
+    }
+  }, []);
+
   const login = useCallback(async (email: string, password: string) => {
     const response = await fetch('/api/auth/login', {
       method: 'POST',
@@ -118,12 +148,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     register,
     verifyEmail,
     resendVerification,
+    requestPasswordReset,
+    resetPassword,
     login,
     logout,
     refreshSession,
     isAdmin: user?.role === 'admin',
     isMember: user?.role === 'member'
-  }), [user, loading, register, verifyEmail, resendVerification, login, logout, refreshSession]);
+  }), [user, loading, register, verifyEmail, resendVerification, requestPasswordReset, resetPassword, login, logout, refreshSession]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

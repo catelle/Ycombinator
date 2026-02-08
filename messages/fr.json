@@ -1,0 +1,562 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "profiles": "Profils",
+    "matches": "Matches",
+    "requests": "Demandes",
+    "team": "Équipe",
+    "notifications": "Notifications",
+    "admin": "Admin",
+    "profile": "Profil",
+    "signIn": "Connexion"
+  },
+  "theme": {
+    "toggle": "Changer le thème",
+    "light": "Clair",
+    "dark": "Sombre"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "backToHome": "Retour à l’accueil",
+    "goToSignIn": "Aller à la connexion",
+    "roles": {
+      "technical": "Technique",
+      "business": "Business",
+      "product": "Produit",
+      "design": "Design",
+      "marketing": "Marketing",
+      "operations": "Opérations",
+      "other": "Autre"
+    },
+    "commitment": {
+      "exploring": "Exploration",
+      "part-time": "Temps partiel",
+      "full-time": "Temps plein",
+      "weekends": "Week-ends"
+    }
+  },
+  "home": {
+    "badge": "Matching de cofondateurs sélectionnés",
+    "title": "Constituez votre équipe startup avec",
+    "titleHighlight": "confiance et clarté",
+    "intro": "NappyMine aide les fondateurs à trouver des partenaires complémentaires, vérifier les identités et verrouiller les équipes en toute confiance. Sans bruit, seulement des bâtisseurs alignés.",
+    "ctaPrimary": "Créer votre profil",
+    "ctaSecondary": "Voir les matches",
+    "stats": {
+      "compatibility": "Compatibilité",
+      "roleSkills": "Rôle + Compétences",
+      "verification": "Vérification",
+      "verificationPrice": "Optionnel 2 000 FCFA",
+      "unlock": "Déverrouillage",
+      "unlockPrice": "500 FCFA"
+    },
+    "heroAlt": "Illustration de matching",
+    "howItWorks": {
+      "title": "Comment ça marche",
+      "subtitle": "Le matching repose sur un moteur de compatibilité basé sur des règles pour trouver des cofondateurs alignés sans bruit.",
+      "step1": {
+        "title": "1. Construisez votre profil fondateur",
+        "body": "Indiquez votre rôle, vos compétences et votre idée startup."
+      },
+      "step2": {
+        "title": "2. Examinez les matches sélectionnés",
+        "body": "Consultez les scores de compatibilité avant déverrouillage."
+      },
+      "step3": {
+        "title": "3. Déverrouillez et verrouillez l’équipe",
+        "body": "Révélez les contacts, invitez et verrouillez votre équipe."
+      },
+      "imageAlt": "Cartes de profils et de matches"
+    },
+    "trust": {
+      "title": "Confiance, sécurité et vérification",
+      "subtitle": "La vérification est optionnelle mais recommandée. Une fois l’équipe verrouillée, demandez une vérification d’identité pour renforcer la confiance et réduire le risque.",
+      "card1": {
+        "title": "Vérification d’identité optionnelle",
+        "body": "Payez 2 000 FCFA pour soumettre une demande de vérification."
+      },
+      "card2": {
+        "title": "Matching intelligent premium",
+        "body": "Voir uniquement les matches avec ≥80% de compatibilité."
+      },
+      "cta": "Gérer votre équipe",
+      "imageAlt": "Verrouillage d’équipe"
+    },
+    "ready": {
+      "title": "Prêt à rencontrer votre cofondateur ?",
+      "subtitle": "Commencez par votre profil et débloquez les bonnes connexions.",
+      "cta": "Commencer"
+    }
+  },
+  "auth": {
+    "titles": {
+      "login": "Bienvenu !",
+      "signup": "Créer votre compte",
+      "reset": "Réinitialiser votre mot de passe"
+    },
+    "subtitles": {
+      "login": "Connectez-vous pour continuer votre parcours de matching.",
+      "signup": "Rejoignez la plateforme pour trouver votre cofondateur.",
+      "reset": "Nous enverrons un code de réinitialisation à votre email."
+    },
+    "labels": {
+      "fullName": "Nom complet",
+      "email": "Email",
+      "phone": "Téléphone",
+      "password": "Mot de passe",
+      "newPassword": "Nouveau mot de passe",
+      "confirmPassword": "Confirmer le mot de passe",
+      "confirmNewPassword": "Confirmer le nouveau mot de passe",
+      "verifyHint": "Consultez votre email pour le code de vérification à 6 chiffres.",
+      "verificationCode": "Code de vérification",
+      "resetHint": "Saisissez le code de réinitialisation envoyé par email.",
+      "resetCode": "Code de réinitialisation"
+    },
+    "actions": {
+      "verifyEmail": "Vérifier l’email",
+      "sendResetCode": "Envoyer le code",
+      "resetPassword": "Réinitialiser",
+      "signIn": "Connexion",
+      "createAccount": "Créer un compte",
+      "forgotPassword": "Mot de passe oublié ?",
+      "backToSignIn": "Retour à la connexion",
+      "switchToSignup": "Pas de compte ? Inscrivez-vous",
+      "switchToLogin": "Déjà un compte ? Connectez-vous",
+      "resendCode": "Renvoyer le code"
+    },
+    "errors": {
+      "passwordLength": "Le mot de passe doit contenir au moins 8 caractères.",
+      "passwordMatch": "Les mots de passe ne correspondent pas.",
+      "verificationEmailFailed": "Impossible d’envoyer l’email de vérification. Utilisez « Renvoyer le code ».",
+      "emailNotVerified": "Email non vérifié. Nous avons envoyé un code de vérification.",
+      "generic": "Une erreur est survenue. Veuillez réessayer.",
+      "resendFailed": "Échec de l’envoi du code."
+    },
+    "notices": {
+      "resetEmailFailed": "Impossible d’envoyer l’email de réinitialisation. Réessayez ou utilisez un autre email.",
+      "resetEmailSent": "Nous avons envoyé un code de réinitialisation.",
+      "resetSuccess": "Mot de passe mis à jour. Vous pouvez vous connecter.",
+      "verificationResent": "Nouveau code de vérification envoyé."
+    }
+  },
+  "profileForm": {
+    "signInTitle": "Veuillez vous connecter pour créer votre profil",
+    "title": "Construisez votre",
+    "titleHighlight": "Profil Fondateur",
+    "subtitle": "Montrez vos compétences et ce que vous construisez pour un matching précis.",
+    "labels": {
+      "name": "Nom",
+      "alias": "Alias (nom public)",
+      "optional": "Optionnel",
+      "role": "Rôle",
+      "commitment": "Niveau d’engagement",
+      "skills": "Compétences",
+      "languages": "Langues",
+      "interests": "Intérêt / Idée startup",
+      "achievements": "Réalisations personnelles",
+      "verificationDocs": "Documents de vérification (obligatoires)",
+      "location": "Localisation",
+      "photoUrl": "URL de photo (optionnel)"
+    },
+    "contact": {
+      "title": "Coordonnées (révélées après déverrouillage)",
+      "email": "Email de contact",
+      "phone": "Téléphone / WhatsApp"
+    },
+    "roles": {
+      "technical": "Technique",
+      "business": "Business",
+      "product": "Produit",
+      "design": "Design",
+      "marketing": "Marketing",
+      "operations": "Opérations",
+      "other": "Autre"
+    },
+    "commitment": {
+      "exploring": "Exploration",
+      "part-time": "Temps partiel",
+      "full-time": "Temps plein",
+      "weekends": "Week-ends"
+    },
+    "placeholders": {
+      "skill": "Ajouter une compétence",
+      "language": "Ajouter une langue",
+      "interests": "Décrivez votre idée ou vos intérêts",
+      "achievement": "Ajouter une réalisation",
+      "verificationDocs": "Collez l’URL d’un document (ID, certificat ou preuve)",
+      "location": "Ville, Pays ou Remote",
+      "contactEmail": "vous@entreprise.com",
+      "contactPhone": "+237 6XX XXX XXX",
+      "photoUrl": "https://"
+    },
+    "photoHint": "Astuce : téléversez votre photo sur Google Drive, Imgur ou Cloudinary et collez l’URL directe de l’image.",
+    "verificationDocsHint": "Ajoutez au moins un lien de document (ID, certificat ou preuve de travail).",
+    "actions": {
+      "add": "Ajouter",
+      "save": "Enregistrer le profil",
+      "saving": "Enregistrement..."
+    },
+    "toast": {
+      "saved": "Profil enregistré. Redirection vers les profils..."
+    }
+  },
+  "profiles": {
+    "title": "Profils",
+    "titleHighlight": "Fondateurs",
+    "subtitle": "Parcourez des profils anonymes. L’identité et les contacts restent masqués jusqu’au déverrouillage.",
+    "signInHint": "Connectez-vous pour tester la compatibilité et envoyer une demande.",
+    "loading": "Chargement des profils...",
+    "error": "Impossible de charger les profils.",
+    "empty": "Aucun profil disponible pour le moment."
+  },
+  "profileDetail": {
+    "loadingProfile": "Chargement du profil...",
+    "notAvailable": "Profil indisponible",
+    "backToProfiles": "Retour aux profils",
+    "startupFocus": "Focus startup",
+    "skills": "Compétences",
+    "languages": "Langues",
+    "achievements": "Réalisations",
+    "privacyNote": "L’identité et les contacts sont cachés jusqu’à acceptation et paiement des deux fondateurs.",
+    "compatibilityScore": "Score de compatibilité",
+    "threshold": "Les demandes nécessitent au moins {threshold}% de compatibilité.",
+    "pendingHint": "Cette demande est en attente. Suivez-la dans Demandes.",
+    "actions": {
+      "testMatch": "Tester la compatibilité",
+      "signInToTest": "Connectez-vous pour tester",
+      "requestPending": "Demande en attente",
+      "sendingRequest": "Envoi de la demande...",
+      "requestMatch": "Demander un match",
+      "redirecting": "Redirection...",
+      "upgradeLimit": "Augmenter la limite",
+      "updateProfile": "Mettre à jour le profil"
+    },
+    "errors": {
+      "calculateMatch": "Impossible de calculer le score.",
+      "requestPending": "Une demande est déjà en attente.",
+      "matchLimit": "Limite atteinte. Passez à {price} FCFA pour demander plus de matches.",
+      "requestExists": "Vous avez déjà une demande avec ce fondateur.",
+      "dailyLimit": "Limite quotidienne atteinte ({limit} par jour). Réessayez demain.",
+      "lowScore": "Score inférieur au seuil requis de {threshold}%.",
+      "requestFailed": "Impossible d’envoyer la demande.",
+      "upgradeFailed": "Impossible de démarrer le paiement."
+    },
+    "messages": {
+      "requestSent": "Demande envoyée. Suivez-la dans Demandes."
+    },
+    "toast": {
+      "completeProfile": "Complétez votre profil avant de tester la compatibilité."
+    }
+  },
+  "requests": {
+    "signInTitle": "Veuillez vous connecter pour gérer les demandes",
+    "title": "Demandes",
+    "titleHighlight": "Match",
+    "subtitle": "Les demandes expirent après 3 jours sans réponse.",
+    "loading": "Chargement des demandes...",
+    "error": "Impossible de charger les demandes.",
+    "incoming": {
+      "title": "Demandes entrantes",
+      "empty": "Aucune demande entrante."
+    },
+    "outgoing": {
+      "title": "Demandes sortantes",
+      "empty": "Aucune demande sortante."
+    },
+    "tabs": {
+      "requests": "Demandes",
+      "cancellations": "Annulations",
+      "unlocked": "Déverrouillés"
+    },
+    "status": "Statut : {status}",
+    "actions": {
+      "accept": "Accepter",
+      "decline": "Refuser",
+      "payUnlock": "Payer 500 FCFA pour déverrouiller",
+      "redirecting": "Redirection...",
+      "upgradeLimit": "Augmenter la limite"
+    },
+    "errors": {
+      "matchLimitAccept": "Limite atteinte. Passez à {price} FCFA pour accepter plus de matches.",
+      "matchLimitPay": "Limite atteinte. Passez à {price} FCFA pour payer plus de matches.",
+      "respondFailed": "Impossible de répondre à la demande.",
+      "network": "Erreur réseau. Vérifiez votre connexion internet et réessayez.",
+      "paymentFailed": "Impossible de démarrer le paiement.",
+      "upgradeFailed": "Impossible de démarrer le paiement d’upgrade."
+    },
+    "waitingOther": "En attente du paiement de l’autre fondateur.",
+    "unlocked": {
+      "title": "Matches déverrouillés",
+      "status": "Statut du match : {state}",
+      "noEmail": "Email non renseigné",
+      "noPhone": "Téléphone non renseigné",
+      "noProfile": "Profil indisponible.",
+      "empty": "Aucun match déverrouillé."
+    },
+    "cancellations": {
+      "title": "Demandes d’annulation",
+      "loading": "Chargement des demandes d’annulation...",
+      "error": "Impossible de charger les demandes d’annulation.",
+      "incoming": "Demandes d’annulation entrantes",
+      "outgoing": "Demandes d’annulation sortantes",
+      "status": "Statut : {status}",
+      "responsePlaceholder": "Expliquez votre décision pour l’admin...",
+      "responseLabel": "Réponse",
+      "emptyIncoming": "Aucune demande d’annulation entrante.",
+      "emptyOutgoing": "Aucune demande d’annulation sortante.",
+      "errors": {
+        "respondFailed": "Impossible de répondre à la demande d’annulation."
+      }
+    }
+  },
+  "matches": {
+    "signInTitle": "Veuillez vous connecter pour voir les matches",
+    "verification": {
+      "title": "La vérification est optionnelle mais recommandée.",
+      "disclaimer": "La plateforme n’est pas responsable des arnaques si la vérification est ignorée."
+    },
+    "title": "Matches",
+    "titleHighlight": "Confirmés",
+    "subtitle": "Seuls les matches validés par les deux fondateurs et verrouillés sont affichés.",
+    "loading": "Chargement de vos matches...",
+    "error": "Impossible de charger les matches.",
+    "fallbackRole": "Cofondateur",
+    "fallbackCommitment": "exploration",
+    "fallbackLocation": "Remote",
+    "contactInfo": "Contacts",
+    "noEmail": "Email non renseigné",
+    "noPhone": "Téléphone non renseigné",
+    "empty": "Aucun match confirmé. Consultez les demandes pour accepter et verrouiller.",
+    "cancellation": {
+      "request": "Demander l’annulation du match",
+      "prompt": "Expliquez pourquoi vous souhaitez annuler ce match.",
+      "sent": "Demande d’annulation envoyée. Suivez-la dans Demandes.",
+      "failed": "Impossible d’envoyer la demande d’annulation.",
+      "reasonTooShort": "Veuillez fournir une justification plus détaillée."
+    }
+  },
+  "team": {
+    "signInTitle": "Veuillez vous connecter pour gérer votre équipe",
+    "title": "Verrouillage",
+    "titleHighlight": "Équipe",
+    "subtitle": "Créez une équipe, invitez des matches déverrouillés et verrouillez votre groupe de cofondateurs.",
+    "error": "Impossible de charger les données d’équipe.",
+    "create": {
+      "title": "Créer votre équipe",
+      "subtitle": "Les équipes peuvent avoir jusqu’à 5 membres.",
+      "action": "Créer l’équipe"
+    },
+    "team": {
+      "title": "Votre équipe",
+      "hiddenMember": "Membre (masqué)",
+      "lock": "Verrouiller l’équipe"
+    },
+    "invite": {
+      "title": "Inviter des matches déverrouillés",
+      "empty": "Aucun match déverrouillé. Déverrouillez un match pour l’inviter.",
+      "hiddenProfile": "Profil masqué",
+      "alreadyMember": "Déjà dans l’équipe",
+      "action": "Inviter dans l’équipe",
+      "lockOne": "Verrouiller 1:1"
+    },
+    "verification": {
+      "title": "Vérification d’identité (optionnelle)",
+      "subtitle": "La vérification est optionnelle mais renforce la confiance entre cofondateurs.",
+      "request": "Demander la vérification · 2 000 FCFA",
+      "verified": "Vérifié",
+      "pending": "En attente",
+      "paymentFailed": "Impossible de démarrer le paiement de vérification.",
+      "disclaimer": "La plateforme n’est pas responsable des arnaques si la vérification est ignorée."
+    },
+    "accompaniment": {
+      "title": "Accompagnement startup",
+      "subtitle": "Choisissez un incubateur/accélérateur ou l’accompagnement de la plateforme.",
+      "viewOptions": "Voir les options d’accompagnement",
+      "incubator": "Incubateur",
+      "accelerator": "Accélérateur",
+      "options": {
+        "incubatorOne": "Silicon Savannah Hub",
+        "acceleratorOne": "Pan-Africa Launch"
+      },
+      "platformTitle": "Accompagnement plateforme",
+      "platformSubtitle": "Laissez la plateforme vous guider",
+      "requestSubmitted": "Demande envoyée. Notre équipe vous contactera bientôt."
+    }
+  },
+  "notifications": {
+    "signInTitle": "Veuillez vous connecter pour voir les notifications",
+    "title": "Notifications",
+    "subtitle": "Restez informé des demandes et réponses de match.",
+    "actions": {
+      "markAllRead": "Tout marquer comme lu",
+      "viewDetails": "Voir les détails",
+      "markRead": "Marquer comme lu"
+    },
+    "loading": "Chargement des notifications...",
+    "error": "Impossible de charger les notifications.",
+    "empty": "Aucune notification pour le moment."
+  },
+  "admin": {
+    "accessDenied": {
+      "title": "Accès refusé",
+      "subtitle": "Vous devez être administrateur pour accéder à cette page."
+    },
+    "title": "Tableau de bord",
+    "titleHighlight": "Admin",
+    "subtitle": "Gérez la plateforme de matching.",
+    "cards": {
+      "matching": {
+        "title": "Contrôle du matching",
+        "body": "Revoyez les matches, utilisateurs et demandes de vérification."
+      },
+      "activity": {
+        "title": "Activité & stats",
+        "body": "Suivez les métriques et actions des utilisateurs."
+      },
+      "trust": {
+        "title": "Confiance & sécurité",
+        "body": "Vérification d’identité, signalements et intégrité de la plateforme."
+      }
+    }
+  },
+  "adminMatching": {
+    "accessDenied": {
+      "title": "Accès refusé",
+      "subtitle": "Vous devez être administrateur pour accéder à cette page."
+    },
+    "title": "Admin",
+    "titleHighlight": "Matching",
+    "subtitle": "Gérez utilisateurs, matches et demandes de vérification.",
+    "backToAdmin": "Retour à l’admin",
+    "loading": "Chargement des données...",
+    "error": "Échec du chargement des données admin.",
+    "sections": {
+      "createMatch": "Créer une demande de match",
+      "users": "Utilisateurs",
+      "verifications": "Demandes de vérification",
+      "cancellations": "Demandes d’annulation",
+      "matches": "Matches"
+    },
+    "badges": {
+      "verified": "Vérifié",
+      "emailVerified": "Email vérifié",
+      "deleted": "Supprimé"
+    },
+    "placeholders": {
+      "requester": "Email, id ou alias du demandeur",
+      "recipient": "Email, id ou alias du destinataire",
+      "search": "Rechercher des matches par nom/email"
+    },
+    "actions": {
+      "suspend": "Suspendre",
+      "unsuspend": "Réactiver",
+      "approve": "Approuver",
+      "create": "Créer la demande",
+      "creating": "Création...",
+      "softDelete": "Suppression douce",
+      "cancelMatch": "Annuler le match",
+      "deletePrompt": "Raison de suppression douce (optionnelle)",
+      "cancelPrompt": "Raison de l’annulation du match (optionnelle)"
+    },
+    "errors": {
+      "createMatchRequest": "Impossible de créer la demande de match."
+    },
+    "verification": {
+      "user": "Utilisateur {id}",
+      "status": "Statut : {status}"
+    },
+    "cancellations": {
+      "pair": "{a} ↔ {b}",
+      "status": "Statut : {status}",
+      "requestReason": "Motif de la demande :",
+      "response": "Réponse du destinataire :",
+      "adminNote": "Note admin",
+      "approve": "Approuver l’annulation",
+      "reject": "Refuser l’annulation",
+      "empty": "Aucune demande d’annulation."
+    },
+    "matches": {
+      "pair": "{a} ↔ {b}",
+      "state": "État : {state}"
+    }
+  },
+  "adminActivity": {
+    "accessDenied": {
+      "title": "Accès refusé",
+      "subtitle": "Vous devez être administrateur pour accéder à cette page."
+    },
+    "title": "Activité",
+    "titleHighlight": "Plateforme",
+    "subtitle": "Suivez les actions utilisateurs et les statistiques.",
+    "backToAdmin": "Retour à l’admin",
+    "loading": "Chargement de l’activité...",
+    "error": "Impossible de charger l’activité.",
+    "sections": {
+      "users": "Utilisateurs",
+      "matches": "Matches",
+      "revenue": "Paiements",
+      "activity": "Journal d’activité"
+    },
+    "stats": {
+      "totalUsers": "Utilisateurs totaux : {value}",
+      "activeUsers": "Utilisateurs actifs : {value}",
+      "deletedUsers": "Utilisateurs supprimés : {value}",
+      "suspendedUsers": "Utilisateurs suspendus : {value}",
+      "totalProfiles": "Profils totaux : {value}",
+      "completedProfiles": "Profils complets : {value}",
+      "totalMatches": "Matches totaux : {value}",
+      "lockedMatches": "Matches verrouillés : {value}",
+      "cancelledMatches": "Matches annulés : {value}",
+      "pendingRequests": "Demandes en attente : {value}",
+      "totalPayments": "Paiements enregistrés : {value}",
+      "successPayments": "Paiements réussis : {value}",
+      "noRevenue": "Pas encore de revenus.",
+      "revenueLine": "{currency} : {value}"
+    },
+    "emptyLogs": "Aucun journal d’activité pour le moment."
+  },
+  "accompaniment": {
+    "errors": {
+      "signInRequired": "Connectez-vous et finalisez votre équipe avant de demander un accompagnement.",
+      "submitFailed": "Impossible d’envoyer la demande pour le moment."
+    },
+    "messages": {
+      "requestSubmitted": "Demande envoyée. Notre équipe vous contactera bientôt."
+    },
+    "title": "Accompagnement",
+    "titleHighlight": "Startup",
+    "subtitle": "Après la formation d’une équipe, choisissez un incubateur local ou l’accompagnement de la plateforme.",
+    "backToTeam": "Retour à l’équipe",
+    "local": {
+      "title": "Incubateurs & accompagnateurs locaux",
+      "types": {
+        "incubator": "Incubateur",
+        "accelerator": "Accélérateur"
+      }
+    },
+    "platform": {
+      "title": "Accompagnement par la plateforme",
+      "subtitle": "Bénéficiez d’un suivi direct par nos experts produit, growth et fundraising.",
+      "signInHint": "Connectez-vous pour demander un accompagnement."
+    },
+    "actions": {
+      "requestProgram": "Demander ce programme",
+      "requestPlatform": "Demander l’accompagnement plateforme"
+    },
+    "monetization": {
+      "title": "Monétisation",
+      "fixed": {
+        "title": "Frais fixe",
+        "detail": "Un paiement unique pour un accompagnement complet."
+      },
+      "revenue": {
+        "title": "% sur accompagnement",
+        "detail": "Partage de revenus basé sur les résultats et la traction."
+      },
+      "subscription": {
+        "title": "Abonnement",
+        "detail": "Accès mensuel aux coachs, revues et ateliers."
+      }
+    }
+  }
+}

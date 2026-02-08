@@ -48,6 +48,7 @@ function mapProfile(profile: DbProfile): Profile {
     skills: profile.skills,
     languages: profile.languages || [],
     achievements: profile.achievements || [],
+    verificationDocs: profile.verificationDocs || [],
     interests: profile.interests,
     commitment: profile.commitment,
     location: profile.location,

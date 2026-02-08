@@ -1,11 +1,10 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import type { Match, MatchState, Payment, Profile } from '@/types';
+import type { Match, Payment, Profile } from '@/types';
 import { requireSessionUser } from '@/lib/auth';
 import { getCollection } from '@/lib/db';
 import { createId } from '@/lib/ids';
-import { chargeMobileMoney } from '@/lib/payments';
-import { logAudit } from '@/lib/audit';
+import { initPayunitPayment } from '@/lib/payunit';
 
 const UnlockSchema = z.object({
   matchId: z.string().min(1)
@@ -41,6 +40,9 @@ export async function POST(request: Request) {
     if (match.state === 'LOCKED') {
       return NextResponse.json({ error: 'Match is already locked' }, { status: 400 });
     }
+    if (match.state === 'CANCELLED') {
+      return NextResponse.json({ error: 'Match has been cancelled' }, { status: 400 });
+    }
 
     if (match.state === 'UNLOCKED' || match.state === 'VERIFIED') {
       const profile = await profiles.findOne({ userId: match.matchedUserId });
@@ -50,15 +52,14 @@ export async function POST(request: Request) {
       });
     }
 
-    const charge = await chargeMobileMoney({
-      userId: user.id,
-      amount: 500,
-      currency: 'FCFA',
-      type: 'unlock'
+    const transactionId = `unlock${createId().replace(/-/g, '')}`;
+    const charge = await initPayunitPayment({
+      transactionId,
+      amount: 500
     });
 
-    if (!charge.success) {
-      return NextResponse.json({ error: 'Payment failed' }, { status: 402 });
+    if (!charge.success || !charge.paymentUrl) {
+      return NextResponse.json({ error: charge.error || 'Payment failed' }, { status: 402 });
     }
 
     const paymentId = createId();
@@ -66,37 +67,16 @@ export async function POST(request: Request) {
       _id: paymentId,
       userId: user.id,
       amount: 500,
-      currency: 'FCFA',
+      currency: 'XAF',
       type: 'unlock',
-      status: 'succeeded',
-      provider: charge.provider,
-      reference: charge.reference,
-      createdAt: new Date()
+      status: 'pending',
+      provider: 'payunit',
+      reference: transactionId,
+      createdAt: new Date(),
+      metadata: { matchId }
     });
 
-    await logAudit({
-      actorId: user.id,
-      action: 'payment',
-      metadata: { type: 'unlock', amount: 500, reference: charge.reference }
-    });
-
-    await matches.updateOne(
-      { _id: matchId },
-      { $set: { state: 'UNLOCKED' as MatchState, unlockPaymentId: paymentId, updatedAt: new Date() } }
-    );
-
-    await logAudit({
-      actorId: user.id,
-      action: 'unlock',
-      metadata: { matchId, paymentId }
-    });
-
-    const profile = await profiles.findOne({ userId: match.matchedUserId });
-
-    return NextResponse.json({
-      matchState: 'UNLOCKED',
-      profile: profile ? mapProfile(profile) : null
-    });
+    return NextResponse.json({ paymentUrl: charge.paymentUrl });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to unlock match' }, { status: 400 });
   }
@@ -112,6 +92,7 @@ function mapProfile(profile: DbProfile): Profile {
     skills: profile.skills,
     languages: profile.languages || [],
     achievements: profile.achievements || [],
+    verificationDocs: profile.verificationDocs || [],
     interests: profile.interests,
     commitment: profile.commitment,
     location: profile.location,

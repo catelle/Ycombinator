@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { requireSessionUser } from '@/lib/auth';
 import { getCollection } from '@/lib/db';
 import { createId } from '@/lib/ids';
-import { initCinetPayPayment } from '@/lib/cinetpay';
+import { initPayunitPayment } from '@/lib/payunit';
 import { MATCH_REQUEST_EXPIRATION_MS, MATCH_UNLOCK_PRICE_XAF, MATCH_LIMIT_PRICE_XAF, resolveMatchLimit } from '@/lib/match-utils';
 import type { Match, MatchRequest, Payment } from '@/types';
 
@@ -71,15 +71,10 @@ export async function POST(request: Request) {
       );
     }
 
-    const transactionId = `match-${createId()}`;
-    const charge = await initCinetPayPayment({
+    const transactionId = `match${createId().replace(/-/g, '')}`;
+    const charge = await initPayunitPayment({
       transactionId,
-      amount: MATCH_UNLOCK_PRICE_XAF,
-      description: 'Unlock match payment',
-      customerName: user.name,
-      customerEmail: user.email,
-      customerPhone: user.phone,
-      metadata: { requestId: doc._id, payerId: user.id }
+      amount: MATCH_UNLOCK_PRICE_XAF
     });
 
     if (!charge.success || !charge.paymentUrl) {
@@ -91,10 +86,10 @@ export async function POST(request: Request) {
       _id: paymentId,
       userId: user.id,
       amount: MATCH_UNLOCK_PRICE_XAF,
-      currency: 'FCFA',
+      currency: 'XAF',
       type: 'match',
       status: 'pending',
-      provider: 'cinetpay',
+      provider: 'payunit',
       reference: transactionId,
       createdAt: new Date(),
       metadata: { requestId: doc._id, payerId: user.id }
